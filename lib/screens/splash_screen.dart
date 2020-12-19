@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_wastage_management/screens/auth_screens/auth_screen.dart';
 import 'package:food_wastage_management/screens/home_screen.dart';
+import 'package:food_wastage_management/screens/intro_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (_user != null) {
         Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
       } else {
-        Navigator.of(context).pushReplacementNamed(AuthScreen.routeName);
+        Navigator.of(context).pushReplacementNamed(IntroScreen.routeName);
       }
     });
   }
@@ -42,13 +42,26 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
           SizedBox(height: 10.0),
-          Text(
-            'FoodCycle',
-            style: GoogleFonts.kaushanScript(
-              fontSize: 40.0,
-              color: Colors.blue,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.5,
+          RichText(
+            text: TextSpan(
+              text: 'Food',
+              style: GoogleFonts.berkshireSwash(
+                fontSize: 40.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+                letterSpacing: 1.5,
+              ),
+              children: [
+                TextSpan(
+                  text: 'Cycle',
+                  style: GoogleFonts.berkshireSwash(
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor,
+                    letterSpacing: 1.5,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

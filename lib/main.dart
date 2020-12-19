@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_wastage_management/screens/auth_screens/auth_screen.dart';
 import 'package:food_wastage_management/screens/home_screen.dart';
+import 'package:food_wastage_management/screens/intro_screen.dart';
 import 'package:food_wastage_management/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -17,11 +18,13 @@ class MyApp extends StatelessWidget {
       title: 'Food Wastage Management',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        scaffoldBackgroundColor: Colors.grey[50],
+        primaryColor: Colors.green,
       ),
       home: SplashScreen(),
       routes: {
         HomeScreen.routeName: (ctx) => HomeScreen(),
+        IntroScreen.routeName: (ctx) => IntroScreen(),
         AuthScreen.routeName: (ctx) => AuthScreen(),
       },
     );

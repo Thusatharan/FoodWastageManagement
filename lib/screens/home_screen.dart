@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/home_screen';
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
