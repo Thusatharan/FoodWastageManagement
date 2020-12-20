@@ -1,72 +1,58 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_wastage_management/providers/auth_provider.dart';
+import 'package:food_wastage_management/screens/auth_screens/auth_screen.dart';
+import 'package:food_wastage_management/screens/home_screen.dart';
 import 'package:food_wastage_management/widgets/clipper_widgets/auth_clip_widget.dart';
 import 'package:food_wastage_management/widgets/progress_widget.dart';
 import 'package:provider/provider.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  static const routeName = '/forgot_password_screen';
+class GoogleAuthRoleScreen extends StatefulWidget {
+  static const routeName = '/google_auth_role_screen';
 
   @override
-  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
+  _GoogleAuthRoleScreenState createState() => _GoogleAuthRoleScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
+class _GoogleAuthRoleScreenState extends State<GoogleAuthRoleScreen> {
+  String _dropdownValue = 'Select Role';
   var _isLoading = false;
 
   _submitForm({
-    String email,
+    String roleName,
     BuildContext context,
   }) {
-    final _isValid = _formKey.currentState.validate();
-    FocusScope.of(context).unfocus();
+    try {
+      setState(() {
+        _isLoading = true;
+      });
 
-    if (_isValid) {
-      try {
-        setState(() {
-          _isLoading = true;
-        });
-
-        Provider.of<Authentication>(context, listen: false)
-            .forgotPassword(email: email)
-            .then((_) {
-          _emailController.clear();
-          SnackBar snackBar = SnackBar(
-            content: Text(
-              'A password reset link has been sent to ' + email,
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            backgroundColor: Colors.green,
-          );
-
-          _scaffoldKey.currentState.showSnackBar(snackBar);
-        });
-      } on FirebaseAuthException catch (e) {
-        _emailController.clear();
-        
-        var message = 'An error occured, Please check your credentials.';
-
-        if (e.message != null) {
-          message = e.message;
+      Provider.of<Authentication>(context, listen: false)
+          .googleSignIn(roleName: roleName)
+          .then((user) {
+        if (user != null) {
+          Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+        } else {
+          Navigator.of(context).pushReplacementNamed(AuthScreen.routeName);
         }
+      });
+    } on FirebaseAuthException catch (e) {
+      var message = 'An error occured, Please check your credentials.';
 
-        Scaffold.of(context).showSnackBar(
-          SnackBar(
-            content: Text(message),
-            backgroundColor: Theme.of(context).errorColor,
-          ),
-        );
-
-        setState(() {
-          _isLoading = false;
-        });
+      if (e.message != null) {
+        message = e.message;
       }
+
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Theme.of(context).errorColor,
+        ),
+      );
+
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -75,7 +61,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     final _isportrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
-      key: _scaffoldKey,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -99,7 +84,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   alignment: Alignment.center,
                   margin: EdgeInsets.only(top: _isportrait ? 120.0 : 100.0),
                   child: Text(
-                    'FORGOT PASSWORD',
+                    'USER ROLE',
                     style: TextStyle(
                       fontSize: _isportrait ? 32.0 : 40.0,
                       fontWeight: FontWeight.bold,
@@ -112,53 +97,58 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             ),
             SizedBox(height: 20.0),
             Container(
-              alignment: Alignment.center,
-              padding:
-                  EdgeInsets.symmetric(horizontal: _isportrait ? 30.0 : 80.0),
-              child: Form(
-                key: _formKey,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        offset: Offset(0, 2),
-                        blurRadius: 6.0,
-                      ),
-                    ],
+              margin: EdgeInsets.symmetric(horizontal: 30.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset(0, 2),
+                    blurRadius: 6.0,
                   ),
-                  child: TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(vertical: 15.0),
-                      border: InputBorder.none,
-                      hintText: 'Email',
-                      prefixIcon: Icon(
-                        Icons.mail,
-                        size: 30.0,
-                      ),
-                    ),
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter your email address';
-                      } else if (!value.contains('@')) {
-                        return 'Please enter a valid email address';
-                      }
-                      return null;
-                    },
-                  ),
+                ],
+              ),
+              child: DropdownButtonFormField(
+                value: _dropdownValue,
+                icon: Container(
+                  margin: const EdgeInsets.only(right: 20.0),
+                  child: Icon(Icons.expand_more),
                 ),
+                iconSize: 30.0,
+                elevation: 16,
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 16.0,
+                ),
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                  border: InputBorder.none,
+                  prefixIcon: Icon(Icons.account_box),
+                ),
+                onChanged: (String newValue) {
+                  setState(() {
+                    _dropdownValue = newValue;
+                  });
+                },
+                items: <String>[
+                  'Select Role',
+                  'Donator',
+                  'Reciever',
+                  'Delivery man',
+                ].map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
               ),
             ),
             SizedBox(height: 20.0),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
-                'Enter an email to recieve informations about your reset password.',
+                'Please Select your role name for this app',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 20.0,
@@ -188,7 +178,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     child: FlatButton(
                       padding: EdgeInsets.symmetric(vertical: 15.0),
                       child: Text(
-                        'SUBMIT',
+                        'GOOGLE SIGN IN',
                         style: TextStyle(
                           fontSize: 18.0,
                           color: Colors.white,
@@ -197,7 +187,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ),
                       onPressed: () {
                         _submitForm(
-                          email: _emailController.text.trim(),
+                          roleName: _dropdownValue,
                           context: context,
                         );
                       },

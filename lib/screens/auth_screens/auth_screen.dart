@@ -1,5 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_wastage_management/providers/auth_provider.dart';
+import 'package:food_wastage_management/screens/auth_screens/forgot_password_screen.dart';
+import 'package:food_wastage_management/screens/auth_screens/google_auth_role_screen.dart';
+import 'package:food_wastage_management/screens/home_screen.dart';
 import 'package:food_wastage_management/widgets/clipper_widgets/auth_clip_widget.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food_wastage_management/widgets/progress_widget.dart';
+import 'package:provider/provider.dart';
 
 class AuthScreen extends StatefulWidget {
   static const routeName = '/auth_screen';
@@ -16,7 +24,86 @@ class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>();
   var _isLogIn = true;
   var _isLoading = false;
-  String dropdownValue = 'Select Role';
+  String _dropdownValue = 'Select Role';
+
+  _submitForm({
+    String userName,
+    String roleName,
+    String email,
+    String password,
+    BuildContext context,
+  }) {
+    final _isValid = _formKey.currentState.validate();
+    FocusScope.of(context).unfocus();
+
+    if (_isValid) {
+      try {
+        setState(() {
+          _isLoading = true;
+        });
+
+        if (_isLogIn) {
+          Provider.of<Authentication>(context, listen: false)
+              .emailSignIn(
+            email: email,
+            password: password,
+          )
+              .then((user) {
+            _emailController.clear();
+            _passwordController.clear();
+
+            if (user != null) {
+              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+            } else {
+              Navigator.of(context).pushReplacementNamed(AuthScreen.routeName);
+            }
+          });
+        } else {
+          Provider.of<Authentication>(context, listen: false)
+              .emailSignUp(
+            userName: userName,
+            userRole: roleName,
+            email: email,
+            password: password,
+          )
+              .then((user) {
+            _nameController.clear();
+            _emailController.clear();
+            _passwordController.clear();
+            _reTypePasswordController.clear();
+
+            if (user != null) {
+              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+            } else {
+              Navigator.of(context).pushReplacementNamed(AuthScreen.routeName);
+            }
+          });
+        }
+      } on FirebaseAuthException catch (e) {
+        _nameController.clear();
+        _emailController.clear();
+        _passwordController.clear();
+        _reTypePasswordController.clear();
+
+        var message = 'An error occured, Please check your credentials.';
+
+        if (e.message != null) {
+          message = e.message;
+        }
+
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            backgroundColor: Theme.of(context).errorColor,
+          ),
+        );
+
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +136,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     padding: EdgeInsets.symmetric(
                         horizontal: _isportrait ? 30.0 : 80.0),
                     child: Form(
+                      key: _formKey,
                       child: Column(
                         children: [
                           if (!_isLogIn)
@@ -76,6 +164,16 @@ class _AuthScreenState extends State<AuthScreen> {
                                     size: 30.0,
                                   ),
                                 ),
+                                textCapitalization: TextCapitalization.words,
+                                textInputAction: TextInputAction.next,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter your name';
+                                  } else if (value.trim().length < 4) {
+                                    return 'Username must be atleast 4 letters long';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                           SizedBox(height: 20.0),
@@ -93,7 +191,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 ],
                               ),
                               child: DropdownButtonFormField(
-                                value: dropdownValue,
+                                value: _dropdownValue,
                                 icon: Container(
                                   margin: const EdgeInsets.only(right: 20.0),
                                   child: Icon(Icons.expand_more),
@@ -112,7 +210,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 ),
                                 onChanged: (String newValue) {
                                   setState(() {
-                                    dropdownValue = newValue;
+                                    _dropdownValue = newValue;
                                   });
                                 },
                                 items: <String>[
@@ -153,6 +251,16 @@ class _AuthScreenState extends State<AuthScreen> {
                                   size: 30.0,
                                 ),
                               ),
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Please enter your email address';
+                                } else if (!value.contains('@')) {
+                                  return 'Please enter a valid email address';
+                                }
+                                return null;
+                              },
                             ),
                           ),
                           SizedBox(height: 20.0),
@@ -181,6 +289,15 @@ class _AuthScreenState extends State<AuthScreen> {
                                 ),
                               ),
                               obscureText: true,
+                              textInputAction: TextInputAction.next,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Please enter a password';
+                                } else if (value.trim().length < 7) {
+                                  return 'Password must be atleast 7 characters';
+                                }
+                                return null;
+                              },
                             ),
                           ),
                           SizedBox(height: _isLogIn ? 5.0 : 20.0),
@@ -210,6 +327,16 @@ class _AuthScreenState extends State<AuthScreen> {
                                   ),
                                 ),
                                 obscureText: true,
+                                textInputAction: TextInputAction.done,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Please re-type your password';
+                                  } else if (value.trim() !=
+                                      _passwordController.text.trim()) {
+                                    return 'Password did\'t match, Please re-enter password';
+                                  }
+                                  return null;
+                                },
                               ),
                             ),
                           if (!_isLogIn) SizedBox(height: 10.0),
@@ -225,40 +352,52 @@ class _AuthScreenState extends State<AuthScreen> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed(
+                                      ForgotPasswordScreen.routeName);
+                                },
                               ),
                             ),
-                          SizedBox(
-                              height: _isLogIn
-                                  ? (_isportrait ? 100.0 : 40.0)
-                                  : 30.0),
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(30.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black26,
-                                  offset: Offset(0, 2),
-                                  blurRadius: 6.0,
+                          SizedBox(height: _isLogIn ? 40.0 : 30.0),
+                          _isLoading
+                              ? circularProgress()
+                              : Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 6.0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: FlatButton(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 15.0),
+                                    child: Text(
+                                      _isLogIn ? 'SIGN IN' : 'SIGN UP',
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      _submitForm(
+                                        userName: _nameController.text.trim(),
+                                        email: _emailController.text.trim(),
+                                        password:
+                                            _passwordController.text.trim(),
+                                        roleName: _dropdownValue,
+                                        context: context,
+                                      );
+                                    },
+                                  ),
                                 ),
-                              ],
-                            ),
-                            child: FlatButton(
-                              padding: EdgeInsets.symmetric(vertical: 15.0),
-                              child: Text(
-                                _isLogIn ? 'SIGN IN' : 'SIGN UP',
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              onPressed: () {},
-                            ),
-                          ),
-                          SizedBox(height: 50.0),
+                          SizedBox(height: 30.0),
                         ],
                       ),
                     ),
@@ -266,6 +405,59 @@ class _AuthScreenState extends State<AuthScreen> {
                 ],
               ),
             ),
+            if (_isLogIn)
+              Container(
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 100.0,
+                      child: Divider(
+                        color: Colors.grey[900],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5.0,
+                    ),
+                    Text(
+                      'or',
+                      style: TextStyle(fontSize: 15.0),
+                    ),
+                    SizedBox(
+                      width: 5.0,
+                    ),
+                    SizedBox(
+                      width: 100.0,
+                      child: Divider(
+                        color: Colors.grey[900],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            if (_isLogIn)
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: 15.0,
+                  top: 10.0,
+                ),
+                child: FlatButton.icon(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  color: Colors.grey[300],
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(GoogleAuthRoleScreen.routeName);
+                  },
+                  icon: FaIcon(
+                    FontAwesomeIcons.google,
+                    color: Colors.deepOrange,
+                  ),
+                  label: Text('Sign in with google'),
+                ),
+              ),
           ],
         ),
       ),
