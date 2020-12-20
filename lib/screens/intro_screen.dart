@@ -20,9 +20,9 @@ class _IntroScreenState extends State<IntroScreen> {
   ];
 
   final List<String> subtitles = [
-    'This is the first intro screen, It is looking good',
-    'This is the second intro screen',
-    'This is the third intro screen',
+    'Total average of food wastage in the world 1.3 billion tonnes',
+    'Average death due to hunger 25000 per day',
+    'Take Responsibility to feed the world with your excess food',
   ];
 
   @override

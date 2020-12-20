@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_wastage_management/widgets/clipper_widgets/auth_clip_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AuthScreen extends StatefulWidget {
   static const routeName = '/auth_screen';
@@ -23,11 +24,11 @@ class _AuthScreenState extends State<AuthScreen> {
                     margin: EdgeInsets.only(top: 150.0),
                     child: Text(
                       'Login',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 34.0,
+                      style: GoogleFonts.robotoSlab(
+                        fontSize: 40.0,
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 5.0,
+                        color: Colors.white,
+                        letterSpacing: 1.5,
                       ),
                     ),
                   ),
@@ -175,7 +176,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             child: FlatButton(
                               padding: EdgeInsets.symmetric(vertical: 15.0),
                               child: Text(
-                                'SIGN IN',
+                                'SIGN UP',
                                 style: TextStyle(
                                   fontSize: 18.0,
                                   color: Colors.white,

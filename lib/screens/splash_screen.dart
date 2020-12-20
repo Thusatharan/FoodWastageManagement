@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:food_wastage_management/screens/home_screen.dart';
 import 'package:food_wastage_management/screens/intro_screen.dart';
 import 'package:lottie/lottie.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -45,8 +44,9 @@ class _SplashScreenState extends State<SplashScreen> {
           RichText(
             text: TextSpan(
               text: 'Food',
-              style: GoogleFonts.berkshireSwash(
+              style: TextStyle(
                 fontSize: 40.0,
+                fontFamily: 'Berkshire',
                 fontWeight: FontWeight.bold,
                 color: Colors.blue,
                 letterSpacing: 1.5,
@@ -54,7 +54,8 @@ class _SplashScreenState extends State<SplashScreen> {
               children: [
                 TextSpan(
                   text: 'Cycle',
-                  style: GoogleFonts.berkshireSwash(
+                  style: TextStyle(
+                    fontFamily: 'Berkshire',
                     fontSize: 40.0,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor,
