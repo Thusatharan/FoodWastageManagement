@@ -61,140 +61,145 @@ class _GoogleAuthRoleScreenState extends State<GoogleAuthRoleScreen> {
     final _isportrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                AuthClipWidget(_isportrait),
-                Positioned(
-                  top: _isportrait ? 70.0 : 50.0,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      size: 30.0,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.only(top: _isportrait ? 120.0 : 100.0),
-                  child: Text(
-                    'USER ROLE',
-                    style: TextStyle(
-                      fontSize: _isportrait ? 32.0 : 40.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 1.5,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20.0),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 30.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(0, 2),
-                    blurRadius: 6.0,
-                  ),
-                ],
-              ),
-              child: DropdownButtonFormField(
-                value: _dropdownValue,
-                icon: Container(
-                  margin: const EdgeInsets.only(right: 20.0),
-                  child: Icon(Icons.expand_more),
-                ),
-                iconSize: 30.0,
-                elevation: 16,
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 16.0,
-                ),
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(vertical: 10.0),
-                  border: InputBorder.none,
-                  prefixIcon: Icon(Icons.account_box),
-                ),
-                onChanged: (String newValue) {
-                  setState(() {
-                    _dropdownValue = newValue;
-                  });
-                },
-                items: <String>[
-                  'Select Role',
-                  'Donator',
-                  'Reciever',
-                  'Delivery man',
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-            ),
-            SizedBox(height: 20.0),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                'Please Select your role name for this app',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.blueGrey.shade400,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            SizedBox(height: _isportrait ? 180.0 : 50.0),
-            _isLoading
-                ? circularProgress()
-                : Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.symmetric(
-                        horizontal: _isportrait ? 30.0 : 80.0),
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(30.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          offset: Offset(0, 2),
-                          blurRadius: 6.0,
-                        ),
-                      ],
-                    ),
-                    child: FlatButton(
-                      padding: EdgeInsets.symmetric(vertical: 15.0),
-                      child: Text(
-                        'GOOGLE SIGN IN',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  AuthClipWidget(_isportrait),
+                  Positioned(
+                    top: _isportrait ? 70.0 : 50.0,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        size: 30.0,
+                        color: Colors.white,
                       ),
                       onPressed: () {
-                        _submitForm(
-                          roleName: _dropdownValue,
-                          context: context,
-                        );
+                        Navigator.of(context).pop();
                       },
                     ),
                   ),
-            SizedBox(height: 50.0),
-          ],
+                  Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(top: _isportrait ? 120.0 : 100.0),
+                    child: Text(
+                      'USER ROLE',
+                      style: TextStyle(
+                        fontSize: _isportrait ? 32.0 : 40.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 1.5,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20.0),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 30.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      offset: Offset(0, 2),
+                      blurRadius: 6.0,
+                    ),
+                  ],
+                ),
+                child: DropdownButtonFormField(
+                  value: _dropdownValue,
+                  icon: Container(
+                    margin: const EdgeInsets.only(right: 20.0),
+                    child: Icon(Icons.expand_more),
+                  ),
+                  iconSize: 30.0,
+                  elevation: 16,
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16.0,
+                  ),
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                    border: InputBorder.none,
+                    prefixIcon: Icon(Icons.account_box),
+                  ),
+                  onChanged: (String newValue) {
+                    setState(() {
+                      _dropdownValue = newValue;
+                    });
+                  },
+                  items: <String>[
+                    'Select Role',
+                    'Donator',
+                    'Reciever',
+                    'Delivery man',
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+              SizedBox(height: 20.0),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'Please Select your role name for this app',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.blueGrey.shade400,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              SizedBox(height: _isportrait ? 180.0 : 50.0),
+              _isLoading
+                  ? circularProgress()
+                  : Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(
+                          horizontal: _isportrait ? 30.0 : 80.0),
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(30.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            offset: Offset(0, 2),
+                            blurRadius: 6.0,
+                          ),
+                        ],
+                      ),
+                      child: FlatButton(
+                        padding: EdgeInsets.symmetric(vertical: 15.0),
+                        child: Text(
+                          'GOOGLE SIGN IN',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onPressed: () {
+                          _submitForm(
+                            roleName: _dropdownValue,
+                            context: context,
+                          );
+                        },
+                      ),
+                    ),
+              SizedBox(height: 50.0),
+            ],
+          ),
         ),
       ),
     );

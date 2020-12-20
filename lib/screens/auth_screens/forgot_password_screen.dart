@@ -49,7 +49,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         });
       } on FirebaseAuthException catch (e) {
         _emailController.clear();
-        
+
         var message = 'An error occured, Please check your credentials.';
 
         if (e.message != null) {
@@ -76,106 +76,54 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
       key: _scaffoldKey,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                AuthClipWidget(_isportrait),
-                Positioned(
-                  top: _isportrait ? 70.0 : 50.0,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      size: 30.0,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.only(top: _isportrait ? 120.0 : 100.0),
-                  child: Text(
-                    'FORGOT PASSWORD',
-                    style: TextStyle(
-                      fontSize: _isportrait ? 32.0 : 40.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 1.5,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20.0),
-            Container(
-              alignment: Alignment.center,
-              padding:
-                  EdgeInsets.symmetric(horizontal: _isportrait ? 30.0 : 80.0),
-              child: Form(
-                key: _formKey,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        offset: Offset(0, 2),
-                        blurRadius: 6.0,
-                      ),
-                    ],
-                  ),
-                  child: TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(vertical: 15.0),
-                      border: InputBorder.none,
-                      hintText: 'Email',
-                      prefixIcon: Icon(
-                        Icons.mail,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  AuthClipWidget(_isportrait),
+                  Positioned(
+                    top: _isportrait ? 70.0 : 50.0,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
                         size: 30.0,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(top: _isportrait ? 120.0 : 100.0),
+                    child: Text(
+                      'FORGOT PASSWORD',
+                      style: TextStyle(
+                        fontSize: _isportrait ? 32.0 : 40.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 1.5,
                       ),
                     ),
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter your email address';
-                      } else if (!value.contains('@')) {
-                        return 'Please enter a valid email address';
-                      }
-                      return null;
-                    },
                   ),
-                ),
+                ],
               ),
-            ),
-            SizedBox(height: 20.0),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                'Enter an email to recieve informations about your reset password.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.blueGrey.shade400,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            SizedBox(height: _isportrait ? 180.0 : 50.0),
-            _isLoading
-                ? circularProgress()
-                : Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.symmetric(
-                        horizontal: _isportrait ? 30.0 : 80.0),
+              SizedBox(height: 20.0),
+              Container(
+                alignment: Alignment.center,
+                padding:
+                    EdgeInsets.symmetric(horizontal: _isportrait ? 30.0 : 80.0),
+                child: Form(
+                  key: _formKey,
+                  child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.green,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(30.0),
                       boxShadow: [
                         BoxShadow(
@@ -185,26 +133,83 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         ),
                       ],
                     ),
-                    child: FlatButton(
-                      padding: EdgeInsets.symmetric(vertical: 15.0),
-                      child: Text(
-                        'SUBMIT',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                    child: TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+                        border: InputBorder.none,
+                        hintText: 'Email',
+                        prefixIcon: Icon(
+                          Icons.mail,
+                          size: 30.0,
                         ),
                       ),
-                      onPressed: () {
-                        _submitForm(
-                          email: _emailController.text.trim(),
-                          context: context,
-                        );
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter your email address';
+                        } else if (!value.contains('@')) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
                       },
                     ),
                   ),
-            SizedBox(height: 50.0),
-          ],
+                ),
+              ),
+              SizedBox(height: 20.0),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'Enter an email to recieve informations about your reset password.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.blueGrey.shade400,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              SizedBox(height: _isportrait ? 180.0 : 50.0),
+              _isLoading
+                  ? circularProgress()
+                  : Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(
+                          horizontal: _isportrait ? 30.0 : 80.0),
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(30.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            offset: Offset(0, 2),
+                            blurRadius: 6.0,
+                          ),
+                        ],
+                      ),
+                      child: FlatButton(
+                        padding: EdgeInsets.symmetric(vertical: 15.0),
+                        child: Text(
+                          'SUBMIT',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onPressed: () {
+                          _submitForm(
+                            email: _emailController.text.trim(),
+                            context: context,
+                          );
+                        },
+                      ),
+                    ),
+              SizedBox(height: 50.0),
+            ],
+          ),
         ),
       ),
     );
