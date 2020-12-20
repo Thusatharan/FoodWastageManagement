@@ -13,16 +13,22 @@ class _IntroScreenState extends State<IntroScreen> {
   SwiperController _swiperController = SwiperController();
   int _currentIndex = 0;
 
+  final List<String> imageUrl = [
+    'assets/images/intro_1.png',
+    'assets/images/intro_2.png',
+    'assets/images/intro_3.png',
+  ];
+
   final List<String> titles = [
     'Welcome',
-    'Welcome 2',
-    'Welcome 3',
+    'Sad Truth',
+    'Be a hero',
   ];
 
   final List<String> subtitles = [
-    'Total average of food wastage in the world 1.3 billion tonnes',
-    'Average death due to hunger 25000 per day',
-    'Take Responsibility to feed the world with your excess food',
+    'welcome to the team of foodCycle.',
+    'Total average of food wastage in the world 1.3 billion tonnes and Average death due to hunger 25000 per day.',
+    'Take Responsibility to feed the world with your excess food.',
   ];
 
   @override
@@ -53,6 +59,7 @@ class _IntroScreenState extends State<IntroScreen> {
               return IntroItemWidget(
                 title: titles[index],
                 subtitle: subtitles[index],
+                imageUrl: imageUrl[index],
               );
             },
           ),

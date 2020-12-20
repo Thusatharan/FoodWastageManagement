@@ -9,6 +9,8 @@ class IntroItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(30.0),
@@ -16,13 +18,15 @@ class IntroItemWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              child: Image.asset('assets/images/intro_1.png'),
+              height: _isPortrait ? 250.0 : 200.0,
+              child: Image.asset(imageUrl),
             ),
             Text(
               title,
               style: TextStyle(
-                fontSize: 35.0,
+                fontSize: _isPortrait ? 35.0 : 30.0,
                 fontWeight: FontWeight.bold,
+                letterSpacing: 1.2,
               ),
             ),
             const SizedBox(height: 10.0),
@@ -30,8 +34,9 @@ class IntroItemWidget extends StatelessWidget {
               subtitle,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 25.0,
+                fontSize: _isPortrait ? 25.0 : 20.0,
                 fontWeight: FontWeight.w300,
+                letterSpacing: 1.2,
               ),
             ),
           ],
