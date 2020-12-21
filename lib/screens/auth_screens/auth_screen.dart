@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_wastage_management/providers/auth_provider.dart';
 import 'package:food_wastage_management/screens/auth_screens/forgot_password_screen.dart';
@@ -57,6 +56,30 @@ class _AuthScreenState extends State<AuthScreen> {
             } else {
               Navigator.of(context).pushReplacementNamed(AuthScreen.routeName);
             }
+          }).catchError((error) {
+            setState(() {
+              _isLoading = false;
+            });
+
+            _emailController.clear();
+            _passwordController.clear();
+
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text('Error Occured!'),
+                  content: Text(error.toString()),
+                  actions: [
+                    FlatButton(
+                        child: Text('OK'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        }),
+                  ],
+                );
+              },
+            );
           });
         } else {
           Provider.of<Authentication>(context, listen: false)
@@ -77,30 +100,55 @@ class _AuthScreenState extends State<AuthScreen> {
             } else {
               Navigator.of(context).pushReplacementNamed(AuthScreen.routeName);
             }
+          }).catchError((error) {
+            setState(() {
+              _isLoading = false;
+            });
+
+            _nameController.clear();
+            _emailController.clear();
+            _passwordController.clear();
+            _reTypePasswordController.clear();
+
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text('Error Occured!'),
+                  content: Text(error.toString()),
+                  actions: [
+                    FlatButton(
+                        child: Text('OK'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        }),
+                  ],
+                );
+              },
+            );
           });
         }
-      } on FirebaseAuthException catch (e) {
-        _nameController.clear();
-        _emailController.clear();
-        _passwordController.clear();
-        _reTypePasswordController.clear();
-
-        var message = 'An error occured, Please check your credentials.';
-
-        if (e.message != null) {
-          message = e.message;
-        }
-
-        Scaffold.of(context).showSnackBar(
-          SnackBar(
-            content: Text(message),
-            backgroundColor: Theme.of(context).errorColor,
-          ),
-        );
-
+      } catch (error) {
         setState(() {
           _isLoading = false;
         });
+
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Error Occured!'),
+              content: Text(error.toString()),
+              actions: [
+                FlatButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }),
+              ],
+            );
+          },
+        );
       }
     }
   }
@@ -161,6 +209,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   decoration: InputDecoration(
                                     contentPadding:
                                         EdgeInsets.symmetric(vertical: 15.0),
+                                    errorStyle: TextStyle(height: 0.1),
                                     border: InputBorder.none,
                                     hintText: 'Username',
                                     prefixIcon: Icon(
@@ -209,6 +258,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   decoration: InputDecoration(
                                     contentPadding:
                                         EdgeInsets.symmetric(vertical: 10.0),
+                                    errorStyle: TextStyle(height: 0.1),
                                     border: InputBorder.none,
                                     prefixIcon: Icon(Icons.account_box),
                                   ),
@@ -220,7 +270,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   items: <String>[
                                     'Select Role',
                                     'Donator',
-                                    'Reciever',
+                                    'Receiver',
                                     'Delivery man',
                                   ].map<DropdownMenuItem<String>>(
                                       (String value) {
@@ -229,6 +279,12 @@ class _AuthScreenState extends State<AuthScreen> {
                                       child: Text(value),
                                     );
                                   }).toList(),
+                                  validator: (value) {
+                                    if (value == 'Select Role') {
+                                      return 'Please select user role';
+                                    }
+                                    return null;
+                                  },
                                 ),
                               ),
                             SizedBox(height: _isLogIn ? 50.0 : 20.0),
@@ -249,6 +305,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 decoration: InputDecoration(
                                   contentPadding:
                                       EdgeInsets.symmetric(vertical: 15.0),
+                                  errorStyle: TextStyle(height: 0.1),
                                   border: InputBorder.none,
                                   hintText: 'Email',
                                   prefixIcon: Icon(
@@ -286,6 +343,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 decoration: InputDecoration(
                                   contentPadding:
                                       EdgeInsets.symmetric(vertical: 15.0),
+                                  errorStyle: TextStyle(height: 0.1),
                                   border: InputBorder.none,
                                   hintText: 'Password',
                                   prefixIcon: Icon(
@@ -294,7 +352,9 @@ class _AuthScreenState extends State<AuthScreen> {
                                   ),
                                 ),
                                 obscureText: true,
-                                textInputAction: TextInputAction.next,
+                                textInputAction: _isLogIn
+                                    ? TextInputAction.done
+                                    : TextInputAction.next,
                                 validator: (value) {
                                   if (value.isEmpty) {
                                     return 'Please enter a password';
@@ -324,6 +384,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   decoration: InputDecoration(
                                     contentPadding:
                                         EdgeInsets.symmetric(vertical: 15.0),
+                                    errorStyle: TextStyle(height: 0.1),
                                     border: InputBorder.none,
                                     hintText: 'Re-type Password',
                                     prefixIcon: Icon(
@@ -426,8 +487,11 @@ class _AuthScreenState extends State<AuthScreen> {
                         width: 5.0,
                       ),
                       Text(
-                        'or',
-                        style: TextStyle(fontSize: 15.0),
+                        'OR',
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.grey[900],
+                        ),
                       ),
                       SizedBox(
                         width: 5.0,

@@ -49,7 +49,7 @@ class _IntroScreenState extends State<IntroScreen> {
             pagination: SwiperPagination(
               margin: const EdgeInsets.only(bottom: 20.0),
               builder: DotSwiperPaginationBuilder(
-                color: Colors.blueAccent,
+                color: Colors.green.shade100,
                 activeSize: 17.0,
                 size: 13.0,
               ),

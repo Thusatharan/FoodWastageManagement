@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_wastage_management/providers/auth_provider.dart';
 import 'package:food_wastage_management/widgets/clipper_widgets/auth_clip_widget.dart';
@@ -35,6 +34,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             .forgotPassword(email: email)
             .then((_) {
           _emailController.clear();
+
           SnackBar snackBar = SnackBar(
             content: Text(
               'A password reset link has been sent to ' + email,
@@ -46,26 +46,51 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           );
 
           _scaffoldKey.currentState.showSnackBar(snackBar);
+        }).catchError((error) {
+          setState(() {
+            _isLoading = false;
+          });
+
+          _emailController.clear();
+
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Error Occured!'),
+                content: Text(error.toString()),
+                actions: [
+                  FlatButton(
+                      child: Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }),
+                ],
+              );
+            },
+          );
         });
-      } on FirebaseAuthException catch (e) {
-        _emailController.clear();
-
-        var message = 'An error occured, Please check your credentials.';
-
-        if (e.message != null) {
-          message = e.message;
-        }
-
-        Scaffold.of(context).showSnackBar(
-          SnackBar(
-            content: Text(message),
-            backgroundColor: Theme.of(context).errorColor,
-          ),
-        );
-
+      } catch (error) {
         setState(() {
           _isLoading = false;
         });
+
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Error Occured!'),
+              content: Text(error.toString()),
+              actions: [
+                FlatButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }),
+              ],
+            );
+          },
+        );
       }
     }
   }

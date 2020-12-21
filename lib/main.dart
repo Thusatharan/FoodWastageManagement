@@ -4,6 +4,10 @@ import 'package:food_wastage_management/screens/auth_screens/auth_screen.dart';
 import 'package:food_wastage_management/screens/auth_screens/forgot_password_screen.dart';
 import 'package:food_wastage_management/screens/auth_screens/google_auth_role_screen.dart';
 import 'package:food_wastage_management/screens/home_screen.dart';
+import 'package:food_wastage_management/screens/home_screens/admin_screens/admin_home_screen.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/delivery_man_home_screen.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/donator_home_screen.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_home_screen.dart';
 import 'package:food_wastage_management/screens/intro_screen.dart';
 import 'package:food_wastage_management/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,6 +42,10 @@ class MyApp extends StatelessWidget {
           AuthScreen.routeName: (ctx) => AuthScreen(),
           ForgotPasswordScreen.routeName: (ctx) => ForgotPasswordScreen(),
           GoogleAuthRoleScreen.routeName: (ctx) => GoogleAuthRoleScreen(),
+          AdminHomeScreen.routeName: (ctx) => AdminHomeScreen(),
+          DonatorHomeScreen.routeName: (ctx) => DonatorHomeScreen(),
+          ReceiverHomeScreen.routeName: (ctx) => ReceiverHomeScreen(),
+          DeliveryManHomeScreen.routeName: (ctx) => DeliveryManHomeScreen(),
         },
       ),
     );
