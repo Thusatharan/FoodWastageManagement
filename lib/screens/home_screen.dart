@@ -5,7 +5,7 @@ import 'package:food_wastage_management/models/user_model.dart';
 import 'package:food_wastage_management/screens/home_screens/admin_screens/admin_home_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/delivery_man_home_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/donator_home_screen.dart';
-import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_home_screen.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/receiver_home_screen.dart';
 import 'package:food_wastage_management/widgets/progress_widget.dart';
 
 final userRef = FirebaseFirestore.instance.collection('users');

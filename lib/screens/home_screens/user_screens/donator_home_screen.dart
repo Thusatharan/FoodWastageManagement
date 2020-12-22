@@ -1,10 +1,7 @@
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_wastage_management/providers/auth_provider.dart';
-import 'package:food_wastage_management/screens/auth_screens/auth_screen.dart';
-import 'package:food_wastage_management/widgets/profile_screen_widget.dart';
-import 'package:provider/provider.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/profile_screen.dart';
 
 class DonatorHomeScreen extends StatefulWidget {
   static const routeName = '/donator_home_screen';
@@ -89,7 +86,7 @@ class _DonatorHomeScreenState extends State<DonatorHomeScreen> {
           ? homeScreen()
           : (_currentIndex == 1)
               ? requestScreen()
-              : ProfileScreenWidget(
+              : ProfileScreen(
                   user: _currentUser,
                 ),
     );

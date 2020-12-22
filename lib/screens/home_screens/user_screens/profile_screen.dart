@@ -8,9 +8,9 @@ import 'package:food_wastage_management/widgets/clipper_widgets/profile_clipper.
 import 'package:food_wastage_management/widgets/progress_widget.dart';
 import 'package:provider/provider.dart';
 
-class ProfileScreenWidget extends StatelessWidget {
+class ProfileScreen extends StatelessWidget {
   final User user;
-  ProfileScreenWidget({this.user});
+  ProfileScreen({this.user});
 
   @override
   Widget build(BuildContext context) {
