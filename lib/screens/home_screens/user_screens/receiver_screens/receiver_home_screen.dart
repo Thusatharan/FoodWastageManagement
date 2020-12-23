@@ -2,12 +2,16 @@ import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_wastage_management/models/food.dart';
+import 'package:food_wastage_management/models/organization.dart';
 import 'package:food_wastage_management/providers/foods_provider.dart';
-import 'package:food_wastage_management/screens/home_screens/user_screens/profile_screen.dart';
-import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/food_detail_screen.dart';
+import 'package:food_wastage_management/providers/organization_provider.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/receiver_food_detail_screen.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/receiver_profile_screen.dart';
+import 'package:food_wastage_management/widgets/organization_search_widget.dart';
 import 'package:food_wastage_management/widgets/organization_widget.dart';
 import 'package:food_wastage_management/widgets/rating_stars_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ReceiverHomeScreen extends StatefulWidget {
   static const routeName = '/receiver_home_screen';
@@ -17,6 +21,7 @@ class ReceiverHomeScreen extends StatefulWidget {
 }
 
 class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
+  TextEditingController _searchOrganizationController = TextEditingController();
   User _currentUser = FirebaseAuth.instance.currentUser;
   var _currentIndex = 0;
 
@@ -26,8 +31,159 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _searchOrganizationController.addListener(_onSearchChanged);
+  }
 
-  _searchScreen(){}
+  @override
+  void dispose() {
+    _searchOrganizationController.removeListener(_onSearchChanged);
+    super.dispose();
+  }
+
+  _onSearchChanged() {
+    Provider.of<Organizations>(
+      context,
+      listen: false,
+    ).addSearchString(_searchOrganizationController.text.trim());
+  }
+
+  /* *************************************************************** */
+
+  _emptySearchScreen(isPotrait) {
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.only(top: isPotrait ? 150.0 : 30.0),
+        width: double.infinity,
+        child: Center(
+          child: Column(
+            children: [
+              Container(
+                child: SvgPicture.asset(
+                  'assets/images/search.svg',
+                  height: isPotrait ? 200.0 : 180.0,
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Container(
+                child: Text(
+                  'Search Organization',
+                  style: TextStyle(
+                    fontSize: isPotrait ? 30.0 : 25.0,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).accentColor,
+                  ),
+                ),
+              ),
+              SizedBox(height: 50.0),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _buildOrganization({organizations}) {
+    List<Widget> organizationList = [];
+    organizations.forEach((Organization organization) {
+      organizationList.add(
+        GestureDetector(
+          onTap: () {},
+          child: Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 5.0,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black38,
+                  offset: Offset(0, 2),
+                  blurRadius: 6.0,
+                ),
+              ],
+            ),
+            child: SearchOrganizationWidget(organization),
+          ),
+        ),
+      );
+    });
+    return Column(
+      children: organizationList,
+    );
+  }
+
+  _searchScreen(_isPotrait) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            padding:
+                EdgeInsets.fromLTRB(20.0, _isPotrait ? 80.0 : 50.0, 20.0, 20.0),
+            child: TextField(
+              controller: _searchOrganizationController,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide(width: 0.8),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide(
+                    width: 0.8,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+                hintText: 'Search Organizations',
+                prefixIcon: Icon(
+                  Icons.search,
+                  size: 30.0,
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    _searchOrganizationController.clear();
+                    FocusScope.of(context).unfocus();
+                  },
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Consumer<Organizations>(
+                  builder: (context, data, child) =>
+                      _searchOrganizationController.text.isEmpty
+                          ? _emptySearchScreen(_isPotrait)
+                          : Container(
+                              child: _buildOrganization(
+                                organizations: data.searchOrganizations,
+                              ),
+                            ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /* *************************************************************** */
 
   _buildFoods({foods}) {
     List<Widget> foodList = [];
@@ -35,8 +191,10 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
       foodList.add(
         GestureDetector(
           onTap: () {
-            Navigator.of(context)
-                .pushNamed(FoodDetailScreen.routeName, arguments: food.id);
+            Navigator.of(context).pushNamed(
+              ReceiverFoodDetailScreen.routeName,
+              arguments: food.id,
+            );
           },
           child: Container(
             margin: EdgeInsets.symmetric(
@@ -120,6 +278,8 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _isPotrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     final List<Food> foods = Provider.of<Foods>(
       context,
       listen: false,
@@ -176,46 +336,12 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
           ? SingleChildScrollView(
               child: Column(
                 children: [
-                  //Padding(
-                  //  padding: const EdgeInsets.all(20.0),
-                  //  child: TextField(
-                  //    decoration: InputDecoration(
-                  //      contentPadding: EdgeInsets.symmetric(
-                  //        vertical: 15.0,
-                  //      ),
-                  //      fillColor: Colors.white,
-                  //      filled: true,
-                  //      border: OutlineInputBorder(
-                  //        borderRadius: BorderRadius.circular(30.0),
-                  //        borderSide: BorderSide(width: 0.8),
-                  //      ),
-                  //      enabledBorder: OutlineInputBorder(
-                  //        borderRadius: BorderRadius.circular(30.0),
-                  //        borderSide: BorderSide(
-                  //          width: 0.8,
-                  //          color: Theme.of(context).primaryColor,
-                  //        ),
-                  //      ),
-                  //      hintText: 'Search Food or Restaurants',
-                  //      prefixIcon: Icon(
-                  //        Icons.search,
-                  //        size: 30.0,
-                  //      ),
-                  //      suffixIcon: IconButton(
-                  //        icon: Icon(Icons.clear),
-                  //        onPressed: () {},
-                  //      ),
-                  //    ),
-                  //  ),
-                  //),
-                  //SizedBox(
-                  //  height: 100.0,
-                  //),
                   Container(
                     alignment: Alignment.bottomLeft,
-                    margin: const EdgeInsets.fromLTRB(20.0, 80.0, 20.0, 20.0),
+                    margin: EdgeInsets.fromLTRB(
+                        20.0, _isPotrait ? 80.0 : 50.0, 20.0, 20.0),
                     child: Text(
-                      'Welcome',
+                      'Welcome back',
                       style: TextStyle(
                         fontSize: 30.0,
                         color: Colors.blue,
@@ -247,8 +373,8 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
               ),
             )
           : (_currentIndex == 1)
-              ? _searchScreen()
-              : ProfileScreen(
+              ? _searchScreen(_isPotrait)
+              : ReceiverProfileScreen(
                   user: _currentUser,
                 ),
     );

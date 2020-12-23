@@ -35,6 +35,21 @@ class Organizations with ChangeNotifier {
     return [..._organizations];
   }
 
+  String _searchString;
+
+  List<Organization> get searchOrganizations {
+    return _organizations
+        .where((org) =>
+            org.name.toLowerCase().contains(_searchString) ||
+            org.name.contains(_searchString))
+        .toList();
+  }
+
+  void addSearchString(String searchText) {
+    _searchString = searchText;
+    notifyListeners();
+  }
+
   addOrganization() {
     // add
     notifyListeners();

@@ -9,7 +9,7 @@ import 'package:food_wastage_management/screens/home_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/admin_screens/admin_home_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/delivery_man_home_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/donator_home_screen.dart';
-import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/food_detail_screen.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/receiver_food_detail_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/receiver_home_screen.dart';
 import 'package:food_wastage_management/screens/intro_screen.dart';
 import 'package:food_wastage_management/screens/splash_screen.dart';
@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
           DonatorHomeScreen.routeName: (ctx) => DonatorHomeScreen(),
           ReceiverHomeScreen.routeName: (ctx) => ReceiverHomeScreen(),
           DeliveryManHomeScreen.routeName: (ctx) => DeliveryManHomeScreen(),
-          FoodDetailScreen.routeName: (ctx) => FoodDetailScreen(),
+          ReceiverFoodDetailScreen.routeName: (ctx) => ReceiverFoodDetailScreen(),
         },
       ),
     );

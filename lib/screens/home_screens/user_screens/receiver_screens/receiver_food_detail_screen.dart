@@ -3,14 +3,14 @@ import 'package:food_wastage_management/providers/foods_provider.dart';
 import 'package:food_wastage_management/widgets/rating_stars_widget.dart';
 import 'package:provider/provider.dart';
 
-class FoodDetailScreen extends StatefulWidget {
+class ReceiverFoodDetailScreen extends StatefulWidget {
   static const routeName = '/food_detail_screen';
 
   @override
-  _FoodDetailScreenState createState() => _FoodDetailScreenState();
+  _ReceiverFoodDetailScreenState createState() => _ReceiverFoodDetailScreenState();
 }
 
-class _FoodDetailScreenState extends State<FoodDetailScreen> {
+class _ReceiverFoodDetailScreenState extends State<ReceiverFoodDetailScreen> {
   //_buildMenuItem(Food menuItem) {
   //  return Center(
   //    child: Stack(
