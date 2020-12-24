@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class OrganizationsWidget extends StatelessWidget {
   _buildRecentOrder(BuildContext context, Organization organization) {
     return GestureDetector(
-      onTap: (){},
+      onTap: () {},
       child: Container(
         margin: EdgeInsets.all(10.0),
         width: 260.0,
@@ -93,7 +93,7 @@ class OrganizationsWidget extends StatelessWidget {
             style: TextStyle(
               fontSize: 24.0,
               fontWeight: FontWeight.bold,
-              letterSpacing: 1.2,
+              fontFamily: 'Arima',
             ),
           ),
         ),
