@@ -72,10 +72,11 @@ class _AuthScreenState extends State<AuthScreen> {
                   content: Text(error.toString()),
                   actions: [
                     FlatButton(
-                        child: Text('OK'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        }),
+                      child: Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
                   ],
                 );
               },
@@ -118,10 +119,11 @@ class _AuthScreenState extends State<AuthScreen> {
                   content: Text(error.toString()),
                   actions: [
                     FlatButton(
-                        child: Text('OK'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        }),
+                      child: Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
                   ],
                 );
               },
@@ -141,10 +143,11 @@ class _AuthScreenState extends State<AuthScreen> {
               content: Text(error.toString()),
               actions: [
                 FlatButton(
-                    child: Text('OK'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    }),
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
               ],
             );
           },
@@ -155,7 +158,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _isportrait =
+    final _isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
       body: GestureDetector(
@@ -168,7 +171,7 @@ class _AuthScreenState extends State<AuthScreen> {
               Container(
                 child: Stack(
                   children: [
-                    AuthClipWidget(_isportrait),
+                    AuthClipWidget(_isPortrait),
                     Container(
                       alignment: Alignment.center,
                       margin: EdgeInsets.only(top: 100.0),
@@ -184,9 +187,9 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     Container(
                       alignment: Alignment.center,
-                      margin: EdgeInsets.only(top: _isportrait ? 260.0 : 200.0),
+                      margin: EdgeInsets.only(top: _isPortrait ? 260.0 : 200.0),
                       padding: EdgeInsets.symmetric(
-                          horizontal: _isportrait ? 30.0 : 80.0),
+                          horizontal: _isPortrait ? 30.0 : 80.0),
                       child: Form(
                         key: _formKey,
                         child: Column(

@@ -53,17 +53,12 @@ class Foods with ChangeNotifier {
 
   // begin organization home screen
 
-  String _getOrganizationId;
-
-  List<Food> get organizationFoods {
-    return _foods
-        .where((fd) => fd.organizationId == _getOrganizationId)
-        .toList();
+  bool isOrganizationRegistered(String id) {
+    return _foods.any((fd) => fd.organizationId == id);
   }
 
-  void getOrganizationId(String id) {
-    _getOrganizationId = id;
-    notifyListeners();
+  List<Food> organizationFood(String id) {
+    return _foods.where((fd) => fd.organizationId == id).toList();
   }
 
   // end organization home screen

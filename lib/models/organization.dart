@@ -3,20 +3,20 @@ import 'package:food_wastage_management/models/food.dart';
 class Organization {
   final String id;
   final String name;
-  final String location;
+  final String address;
   final String registrationNo;
   final String imageUrl;
-  final String mobile;
+  final String contactNo;
   final int rating;
   final List<Food> menu;
 
   Organization({
     this.id,
     this.name,
-    this.location,
+    this.address,
     this.registrationNo,
     this.imageUrl,
-    this.mobile,
+    this.contactNo,
     this.rating,
     this.menu,
   });

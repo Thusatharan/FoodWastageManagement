@@ -27,7 +27,7 @@ class SearchOrganizationWidget extends StatelessWidget {
             RatingStars(organization.rating, 14.0),
             SizedBox(height: 3.0),
             Text(
-              organization.location,
+              organization.address,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
               ),
