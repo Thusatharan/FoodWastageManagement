@@ -4,7 +4,7 @@ import 'package:food_wastage_management/widgets/rating_stars_widget.dart';
 import 'package:provider/provider.dart';
 
 class ReceiverFoodDetailScreen extends StatefulWidget {
-  static const routeName = '/food_detail_screen';
+  static const routeName = '/receiver_food_detail_screen';
 
   @override
   _ReceiverFoodDetailScreenState createState() => _ReceiverFoodDetailScreenState();

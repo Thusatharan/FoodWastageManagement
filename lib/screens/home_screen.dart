@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_wastage_management/models/user_model.dart';
 import 'package:food_wastage_management/screens/home_screens/admin_screens/admin_home_screen.dart';
-import 'package:food_wastage_management/screens/home_screens/user_screens/delivery_man_home_screen.dart';
-import 'package:food_wastage_management/screens/home_screens/user_screens/donator_home_screen.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/delivery_man_screens/delivery_man_home_screen.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/organization_screens/organization_home_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/receiver_home_screen.dart';
 import 'package:food_wastage_management/widgets/progress_widget.dart';
 
@@ -23,8 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final userData = UserModel.fromDocument(doc);
     if (userData.roleName == 'Admin') {
       return AdminHomeScreen();
-    } else if (userData.roleName == 'Donator') {
-      return DonatorHomeScreen();
+    } else if (userData.roleName == 'Organization') {
+      return OrganizationHomeScreen();
     } else if (userData.roleName == 'Receiver') {
       return ReceiverHomeScreen();
     } else if (userData.roleName == 'Delivery man') {

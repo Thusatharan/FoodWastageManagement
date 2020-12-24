@@ -269,7 +269,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   },
                                   items: <String>[
                                     'Select Role',
-                                    'Donator',
+                                    'Organization',
                                     'Receiver',
                                     'Delivery man',
                                   ].map<DropdownMenuItem<String>>(

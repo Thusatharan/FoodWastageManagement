@@ -35,6 +35,8 @@ class Organizations with ChangeNotifier {
     return [..._organizations];
   }
 
+  // begin receivers search screen
+
   String _searchString;
 
   List<Organization> get searchOrganizations {
@@ -49,6 +51,10 @@ class Organizations with ChangeNotifier {
     _searchString = searchText;
     notifyListeners();
   }
+
+  // end receivers search screen
+
+ 
 
   addOrganization() {
     // add

@@ -1,16 +1,16 @@
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/receiver_profile_screen.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/organization_screens/organization_profile_screen.dart';
 
-class DonatorHomeScreen extends StatefulWidget {
-  static const routeName = '/donator_home_screen';
+class OrganizationHomeScreen extends StatefulWidget {
+  static const routeName = '/organization_home_screen';
 
   @override
-  _DonatorHomeScreenState createState() => _DonatorHomeScreenState();
+  _OrganizationHomeScreenState createState() => _OrganizationHomeScreenState();
 }
 
-class _DonatorHomeScreenState extends State<DonatorHomeScreen> {
+class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
   User _currentUser = FirebaseAuth.instance.currentUser;
   var _currentIndex = 0;
 
@@ -20,12 +20,16 @@ class _DonatorHomeScreenState extends State<DonatorHomeScreen> {
     });
   }
 
-  homeScreen() {}
+  homeScreen(_isPotrait){}
+ 
+  requestScreen(){}
 
-  requestScreen() {}
+  /* ***************************************************************** */
 
   @override
   Widget build(BuildContext context) {
+    final _isPotrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -83,10 +87,10 @@ class _DonatorHomeScreenState extends State<DonatorHomeScreen> {
         ],
       ),
       body: (_currentIndex == 0)
-          ? homeScreen()
+          ? homeScreen(_isPotrait)
           : (_currentIndex == 1)
               ? requestScreen()
-              : ReceiverProfileScreen(
+              : OrganizationProfileScreen(
                   user: _currentUser,
                 ),
     );

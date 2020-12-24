@@ -7,9 +7,9 @@ import 'package:food_wastage_management/providers/foods_provider.dart';
 import 'package:food_wastage_management/providers/organization_provider.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/receiver_food_detail_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/receiver_profile_screen.dart';
-import 'package:food_wastage_management/widgets/organization_search_widget.dart';
-import 'package:food_wastage_management/widgets/organization_widget.dart';
 import 'package:food_wastage_management/widgets/rating_stars_widget.dart';
+import 'package:food_wastage_management/widgets/receivers_widgets/organization_search_widget.dart';
+import 'package:food_wastage_management/widgets/receivers_widgets/organization_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

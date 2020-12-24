@@ -153,7 +153,7 @@ class _GoogleAuthRoleScreenState extends State<GoogleAuthRoleScreen> {
                     },
                     items: <String>[
                       'Select Role',
-                      'Donator',
+                      'Organization',
                       'Receiver',
                       'Delivery man',
                     ].map<DropdownMenuItem<String>>((String value) {

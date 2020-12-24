@@ -51,7 +51,24 @@ class Foods with ChangeNotifier {
     return [..._foods];
   }
 
-  Food findById(String id){
+  // begin organization home screen
+
+  String _getOrganizationId;
+
+  List<Food> get organizationFoods {
+    return _foods
+        .where((fd) => fd.organizationId == _getOrganizationId)
+        .toList();
+  }
+
+  void getOrganizationId(String id) {
+    _getOrganizationId = id;
+    notifyListeners();
+  }
+
+  // end organization home screen
+
+  Food findById(String id) {
     return _foods.firstWhere((fd) => fd.id == id);
   }
 
