@@ -119,11 +119,14 @@ class Foods with ChangeNotifier {
         doc.reference.delete();
       }
     }).then((_) {
-
       userFoodRef.doc(foodId).get().then((doc) {
         if (doc.exists) {
           doc.reference.delete();
         }
+      }).then((_) {
+        storageRef.child('foods/post_$foodId.jpg').delete().catchError((error) {
+          throw error;
+        });
       }).catchError((error) {
         _foods.insert(_existingFoodIndex, _existingFood);
         notifyListeners();
@@ -131,7 +134,6 @@ class Foods with ChangeNotifier {
       }).then((_) {
         _existingFood = null;
       });
-
     }).catchError((error) {
       _foods.insert(_existingFoodIndex, _existingFood);
       notifyListeners();

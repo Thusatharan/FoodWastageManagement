@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_wastage_management/models/food.dart';
 import 'package:food_wastage_management/providers/foods_provider.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/organization_screens/organization_home_screen.dart';
 import 'package:food_wastage_management/widgets/progress_widget.dart';
 import 'package:food_wastage_management/widgets/show_dialog_alert_widget.dart';
 import 'package:intl/intl.dart';
@@ -59,7 +60,7 @@ class _OrganizationEditScreenState extends State<OrganizationEditScreen> {
         _foodCountController.clear();
         _timeController.clear();
 
-        Navigator.pop(context);
+        Navigator.of(context).pushReplacementNamed(OrganizationHomeScreen.routeName);
       }).catchError((error) {
         setState(() {
           _isUploading = false;

@@ -77,11 +77,7 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
     List<Widget> _organizationFoodList = [];
     foods.forEach((Food food) {
       _organizationFoodList.add(
-        OrganizationFoodWidget(
-          food: food,
-          organizationId: _currentUser.uid,
-          context: context,
-        ),
+        OrganizationFoodWidget(food: food),
       );
     });
     return Column(
