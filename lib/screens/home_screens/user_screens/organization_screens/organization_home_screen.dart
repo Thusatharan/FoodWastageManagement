@@ -1,7 +1,6 @@
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:food_wastage_management/models/food.dart';
 import 'package:food_wastage_management/providers/foods_provider.dart';
 import 'package:food_wastage_management/screens/home_screen.dart';
@@ -12,7 +11,9 @@ import 'package:food_wastage_management/widgets/organization_widgets/organizatio
 import 'package:food_wastage_management/widgets/progress_widget.dart';
 import 'package:food_wastage_management/widgets/show_dialog_alert_widget.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class OrganizationHomeScreen extends StatefulWidget {
   static const routeName = '/organization_home_screen';
@@ -45,9 +46,9 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
           child: Column(
             children: [
               Container(
-                child: SvgPicture.asset(
-                  'assets/images/no_posts.svg',
-                  height: isPotrait ? 170.0 : 160.0,
+                child: Lottie.asset(
+                  'animations/empty_box.json',
+                  height: isPotrait ? 200.0 : 180.0,
                 ),
               ),
               SizedBox(
@@ -55,10 +56,11 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
               ),
               Container(
                 child: Text(
-                  'No Posts',
+                  'Currently No Donates',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: isPotrait ? 30.0 : 25.0,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.w600,
                     color: Colors.blue,
                   ),
                 ),
@@ -96,7 +98,7 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
           return showDialogAlertWidget(
             context: context,
             error: snapshot.error,
-            title: 'Error occured',
+            title: 'Error Message!',
           );
         }
         return SingleChildScrollView(
@@ -110,7 +112,7 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
                   'Welcome back',
                   style: TextStyle(
                     fontSize: 30.0,
-                    color: Colors.blue,
+                    color: Colors.indigo,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.2,
                   ),
@@ -120,12 +122,13 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 5.0),
+                    padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 5.0),
                     child: Text(
-                      'My Posts',
+                      'My Donates',
                       style: TextStyle(
-                        fontSize: 24.0,
+                        fontSize: 25.0,
                         fontWeight: FontWeight.w600,
+                        color: Colors.black,
                         letterSpacing: 1.2,
                       ),
                     ),
@@ -150,101 +153,152 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
 
   Future _pickImage(ImageSource source) async {
     await _picker.getImage(source: source).then((pickedFile) {
-      Navigator.of(context).pushReplacementNamed(
-        OrganizationFoodUploadScreen.routeName,
-        arguments: pickedFile,
-      );
+      if (pickedFile != null) {
+        Navigator.of(context).pushReplacementNamed(
+          OrganizationFoodUploadScreen.routeName,
+          arguments: pickedFile,
+        );
+      }
     }).catchError((error) {
       showDialogAlertWidget(
         context: context,
         error: error,
-        title: 'Error Occured!',
+        title: 'Error Message!',
       );
     });
   }
 
   _buildCreatePostScreen(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return SimpleDialog(
-          title: Text(
-            'Select Food Image',
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          children: [
-            SimpleDialogOption(
-              child: Text(
-                'Capture with camera',
-                style: TextStyle(
-                  color: Colors.black,
+    var alertStyle = AlertStyle(
+      isCloseButton: false,
+      isOverlayTapDismiss: false,
+      descTextAlign: TextAlign.center,
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      titleStyle: TextStyle(
+        color: Colors.indigo,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+
+    return Alert(
+        context: context,
+        style: alertStyle,
+        title: "Select Food Image",
+        content: Column(
+          children: <Widget>[
+            Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Icon(
+                  Icons.camera_alt,
+                  color: Colors.black54,
                 ),
-              ),
-              onPressed: () => _pickImage(ImageSource.camera),
-            ),
-            SimpleDialogOption(
-              child: Text(
-                'Select From Gallery',
-                style: TextStyle(
-                  color: Colors.black,
+                FlatButton(
+                  child: Text(
+                    'Capture with camera',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                    ),
+                  ),
+                  onPressed: () => _pickImage(ImageSource.camera),
                 ),
-              ),
-              onPressed: () => _pickImage(ImageSource.gallery),
+              ],
             ),
             Divider(),
-            SimpleDialogOption(
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  color: Colors.black,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Icon(
+                  Icons.folder,
+                  color: Colors.black54,
                 ),
-              ),
-              onPressed: () => Navigator.pop(context),
+                FlatButton(
+                  child: Text(
+                    'Select From Gallery',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                    ),
+                  ),
+                  onPressed: () => _pickImage(ImageSource.gallery),
+                ),
+              ],
             ),
+            Divider(),
           ],
-        );
-      },
-    );
+        ),
+        buttons: [
+          DialogButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "Cancel",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+              ),
+            ),
+            gradient: LinearGradient(colors: [
+              Color.fromRGBO(116, 116, 191, 1.0),
+              Color.fromRGBO(52, 138, 199, 1.0)
+            ]),
+          )
+        ]).show();
   }
 
   _buildAddFoodScreen(BuildContext context) async {
     final organizationDoc = await organizationRef.doc(_currentUser.uid).get();
 
+    var alertStyle = AlertStyle(
+      isCloseButton: false,
+      isOverlayTapDismiss: false,
+      descTextAlign: TextAlign.center,
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      titleStyle: TextStyle(
+        color: Colors.indigo,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+
     if (organizationDoc.exists) {
       return _buildCreatePostScreen(context);
     } else {
-      return showDialog(
+      return Alert(
         context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              'Alert!',
+        style: alertStyle,
+        type: AlertType.info,
+        title: 'Alert Message!',
+        desc: 'Please register your organization to create Post',
+        buttons: [
+          DialogButton(
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pop(context),
+            color: Color.fromRGBO(0, 179, 134, 1.0),
+          ),
+          DialogButton(
+            child: Text(
+              "OK",
               style: TextStyle(
-                color: Theme.of(context).primaryColor,
+                color: Colors.white,
+                fontSize: 20,
               ),
             ),
-            content: Text('Please register your organization to create Post'),
-            actions: [
-              FlatButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () {
-                  Navigator.of(context).pushReplacementNamed(
-                      OrganizationRegisterScreen.routeName);
-                },
-              ),
-            ],
-          );
-        },
-      );
+            onPressed: () => Navigator.of(context)
+                .pushReplacementNamed(OrganizationRegisterScreen.routeName),
+            width: 120,
+            gradient: LinearGradient(colors: [
+              Color.fromRGBO(116, 116, 191, 1.0),
+              Color.fromRGBO(52, 138, 199, 1.0)
+            ]),
+          )
+        ],
+      ).show();
     }
   }
 
@@ -255,7 +309,7 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.indigo,
         onPressed: () => _buildAddFoodScreen(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -271,14 +325,14 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
         elevation: 10.0,
         items: <BubbleBottomBarItem>[
           BubbleBottomBarItem(
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Colors.indigo,
             icon: Icon(
               Icons.dashboard,
               color: Colors.black,
             ),
             activeIcon: Icon(
               Icons.dashboard,
-              color: Theme.of(context).primaryColor,
+              color: Colors.indigo,
             ),
             title: Text('Home'),
           ),

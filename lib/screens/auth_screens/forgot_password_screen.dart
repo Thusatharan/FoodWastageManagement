@@ -57,7 +57,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           showDialogAlertWidget(
             context: context,
             error: error,
-            title: 'Error Occured!',
+            title: 'Error Message!',
           );
         });
       } catch (error) {
@@ -68,7 +68,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         showDialogAlertWidget(
           context: context,
           error: error,
-          title: 'Error Occured!',
+          title: 'Error Message!',
         );
       }
     }
