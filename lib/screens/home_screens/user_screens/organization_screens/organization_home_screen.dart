@@ -80,6 +80,7 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
         OrganizationFoodWidget(
           food: food,
           organizationId: _currentUser.uid,
+          context: context,
         ),
       );
     });

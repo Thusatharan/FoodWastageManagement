@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_wastage_management/models/food.dart';
 import 'package:food_wastage_management/providers/foods_provider.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/organization_screens/organization_edit_screen.dart';
 import 'package:food_wastage_management/widgets/progress_widget.dart';
 import 'package:food_wastage_management/widgets/show_dialog_alert_widget.dart';
 import 'package:intl/intl.dart';
@@ -10,7 +11,8 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 class OrganizationFoodWidget extends StatefulWidget {
   final Food food;
   final String organizationId;
-  const OrganizationFoodWidget({this.food, this.organizationId});
+  final BuildContext context;
+  const OrganizationFoodWidget({this.food, this.organizationId, this.context});
 
   @override
   _OrganizationFoodWidgetState createState() => _OrganizationFoodWidgetState();
@@ -21,6 +23,8 @@ class _OrganizationFoodWidgetState extends State<OrganizationFoodWidget> {
   final TextEditingController _foodCountController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
   final _editFormKey = GlobalKey<FormState>();
+  final _timestamp = DateTime.now();
+  DateTime _selectedDateTime;
   var _isUploading = false;
 
   @override
@@ -63,11 +67,11 @@ class _OrganizationFoodWidgetState extends State<OrganizationFoodWidget> {
           _isUploading = false;
         });
 
-       // showDialogAlertWidget(
-       //   context: context,
-       //   error: error,
-       //   title: 'Error Occured!',
-       // );
+        // showDialogAlertWidget(
+        //   context: context,
+        //   error: error,
+        //   title: 'Error Occured!',
+        // );
       });
     }
   }
@@ -83,7 +87,7 @@ class _OrganizationFoodWidgetState extends State<OrganizationFoodWidget> {
     ),
   );
 
-  _editFood(BuildContext context) {
+  editFood(BuildContext context) {
     return Alert(
       context: context,
       style: alertStyle,
@@ -233,6 +237,8 @@ class _OrganizationFoodWidgetState extends State<OrganizationFoodWidget> {
                 validator: (value) {
                   if (value.isEmpty) {
                     return 'Please select the expire date and time';
+                  } else if (_timestamp.isBefore(_selectedDateTime)) {
+                    return 'Please enter valid expire date and time';
                   }
                   return null;
                 },
@@ -280,7 +286,12 @@ class _OrganizationFoodWidgetState extends State<OrganizationFoodWidget> {
                   child: IconButton(
                     icon: Icon(Icons.edit),
                     color: Colors.blue,
-                    onPressed: () => _editFood(context),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => OrganizationEditScreen(food: widget.food)),
+                      );
+                    },
                   ),
                 ),
                 Container(

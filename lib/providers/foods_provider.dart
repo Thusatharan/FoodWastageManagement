@@ -96,21 +96,6 @@ class Foods with ChangeNotifier {
         'organizationName': organization.name,
         'organizationRating': organization.rating.toString(),
         'createdAt': DateFormat('dd/MM/yyyy hh:mm a').format(_timestamp),
-      }).then((_) {
-        final newFood = Food(
-          id: id,
-          name: name,
-          imageUrl: imageUrl,
-          available: available,
-          expireTime: expireTime,
-          organizationId: organizationId,
-          organizationAddress: organization.address,
-          organizationName: organization.name,
-          organizationRating: organization.rating,
-        );
-
-        _foods.add(newFood);
-        notifyListeners();
       }).catchError((error) {
         throw error;
       });
@@ -134,17 +119,23 @@ class Foods with ChangeNotifier {
         doc.reference.delete();
       }
     }).then((_) {
-      userRef.doc(foodId).get().then((doc) {
+
+      userFoodRef.doc(foodId).get().then((doc) {
         if (doc.exists) {
           doc.reference.delete();
         }
+      }).catchError((error) {
+        _foods.insert(_existingFoodIndex, _existingFood);
+        notifyListeners();
+        throw error;
+      }).then((_) {
+        _existingFood = null;
       });
+
     }).catchError((error) {
       _foods.insert(_existingFoodIndex, _existingFood);
       notifyListeners();
       throw error;
-    }).then((_) {
-      _existingFood = null;
     });
   }
   // end delete food data

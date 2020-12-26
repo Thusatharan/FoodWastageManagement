@@ -7,6 +7,7 @@ import 'package:food_wastage_management/providers/foods_provider.dart';
 import 'package:food_wastage_management/screens/home_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/organization_screens/organization_home_screen.dart';
 import 'package:food_wastage_management/widgets/progress_widget.dart';
+import 'package:food_wastage_management/widgets/show_dialog_alert_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +30,8 @@ class _OrganizationFoodUploadScreenState
   final TextEditingController _foodCountController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  //final _timestamp = DateTime.now();
+  //DateTime _selectedDateTime;
   String _postId = Uuid().v4();
   File _image;
   var _isUploading = false;
@@ -94,22 +97,10 @@ class _OrganizationFoodUploadScreenState
           _isUploading = false;
         });
 
-        showDialog(
+        showDialogAlertWidget(
           context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('Error Occured!'),
-              content: Text(error.toString()),
-              actions: [
-                FlatButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            );
-          },
+          error: error,
+          title: 'Error Occured!',
         );
       });
     }
@@ -302,13 +293,26 @@ class _OrganizationFoodUploadScreenState
                                   selectedTime.hour,
                                   selectedTime.minute,
                                 ));
+
+                                //setState(() {
+                                //  _selectedDateTime = DateTime(
+                                //    selectedDate.year,
+                                //    selectedDate.month,
+                                //    selectedDate.day,
+                                //    selectedTime.hour,
+                                //    selectedTime.minute,
+                                //  );
+                                //});
                               });
                             });
                           },
                           validator: (value) {
                             if (value.isEmpty) {
                               return 'Please select the expire date and time';
-                            }
+                            } 
+                            //else if (_timestamp.isBefore(_selectedDateTime)) {
+                            //  return 'Please enter valid expire date and time';
+                            //}
                             return null;
                           },
                         ),
