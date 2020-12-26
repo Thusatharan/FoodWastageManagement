@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_wastage_management/providers/auth_provider.dart';
 import 'package:food_wastage_management/widgets/clipper_widgets/auth_clip_widget.dart';
 import 'package:food_wastage_management/widgets/progress_widget.dart';
+import 'package:food_wastage_management/widgets/show_dialog_alert_widget.dart';
 import 'package:provider/provider.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -53,21 +54,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
           _emailController.clear();
 
-          showDialog(
+          showDialogAlertWidget(
             context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text('Error Occured!'),
-                content: Text(error.toString()),
-                actions: [
-                  FlatButton(
-                      child: Text('OK'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      }),
-                ],
-              );
-            },
+            error: error,
+            title: 'Error Occured!',
           );
         });
       } catch (error) {
@@ -75,21 +65,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           _isLoading = false;
         });
 
-        showDialog(
+        showDialogAlertWidget(
           context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('Error Occured!'),
-              content: Text(error.toString()),
-              actions: [
-                FlatButton(
-                    child: Text('OK'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    }),
-              ],
-            );
-          },
+          error: error,
+          title: 'Error Occured!',
         );
       }
     }

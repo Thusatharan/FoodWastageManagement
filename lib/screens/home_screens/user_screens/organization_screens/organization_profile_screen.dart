@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_wastage_management/models/user_model.dart';
+import 'package:food_wastage_management/models/user.dart';
 import 'package:food_wastage_management/providers/auth_provider.dart';
 import 'package:food_wastage_management/screens/auth_screens/auth_screen.dart';
 import 'package:food_wastage_management/screens/home_screen.dart';

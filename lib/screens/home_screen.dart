@@ -1,14 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_wastage_management/models/user_model.dart';
+import 'package:food_wastage_management/models/user.dart';
 import 'package:food_wastage_management/screens/home_screens/admin_screens/admin_home_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/delivery_man_screens/delivery_man_home_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/organization_screens/organization_home_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/receiver_home_screen.dart';
 import 'package:food_wastage_management/widgets/progress_widget.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 final userRef = FirebaseFirestore.instance.collection('users');
+final organizationRef = FirebaseFirestore.instance.collection('organizations');
+final organizationFoodRef = FirebaseFirestore.instance.collection('foods');
+final userFoodRef = FirebaseFirestore.instance.collection('userFoods');
+final storageRef = FirebaseStorage.instance.ref();
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home_screen';

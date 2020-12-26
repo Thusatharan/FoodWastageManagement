@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_wastage_management/models/food.dart';
 
 class Organization {
@@ -20,4 +21,16 @@ class Organization {
     this.rating,
     this.menu,
   });
+
+  factory Organization.fromDocument(DocumentSnapshot doc) {
+    return Organization(
+      id: doc['id'],
+      name: doc['name'],
+      address: doc['address'],
+      rating: int.tryParse(doc['rating']) ?? 0,
+      contactNo: doc['contactNo'],
+      imageUrl: doc['imageUrl'],
+      registrationNo: doc['registrationNo'],
+    );
+  }
 }

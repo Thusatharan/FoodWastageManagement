@@ -7,6 +7,7 @@ import 'package:food_wastage_management/screens/auth_screens/forgot_password_scr
 import 'package:food_wastage_management/screens/auth_screens/google_auth_role_screen.dart';
 import 'package:food_wastage_management/screens/home_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/admin_screens/admin_home_screen.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/organization_screens/organization_food_upload_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/organization_screens/organization_home_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/organization_screens/organization_register_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/receiver_food_detail_screen.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
           ReceiverHomeScreen.routeName: (ctx) => ReceiverHomeScreen(),
           ReceiverFoodDetailScreen.routeName: (ctx) => ReceiverFoodDetailScreen(),
           OrganizationRegisterScreen.routeName: (ctx) => OrganizationRegisterScreen(),
+          OrganizationFoodUploadScreen.routeName: (ctx) => OrganizationFoodUploadScreen(),
         },
       ),
     );

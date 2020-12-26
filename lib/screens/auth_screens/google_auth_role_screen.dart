@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_wastage_management/providers/auth_provider.dart';
-import 'package:food_wastage_management/screens/auth_screens/auth_screen.dart';
 import 'package:food_wastage_management/screens/home_screen.dart';
 import 'package:food_wastage_management/widgets/clipper_widgets/auth_clip_widget.dart';
 import 'package:food_wastage_management/widgets/progress_widget.dart';
+import 'package:food_wastage_management/widgets/show_dialog_alert_widget.dart';
 import 'package:provider/provider.dart';
 
 class GoogleAuthRoleScreen extends StatefulWidget {
@@ -33,12 +33,8 @@ class _GoogleAuthRoleScreenState extends State<GoogleAuthRoleScreen> {
 
         Provider.of<Authentication>(context, listen: false)
             .googleSignIn(roleName: roleName)
-            .then((user) {
-          if (user != null) {
-            Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-          } else {
-            Navigator.of(context).pushReplacementNamed(AuthScreen.routeName);
-          }
+            .then((_) {
+          Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
         }).catchError((_) {
           setState(() {
             _isLoading = false;
@@ -49,21 +45,10 @@ class _GoogleAuthRoleScreenState extends State<GoogleAuthRoleScreen> {
           _isLoading = false;
         });
 
-        showDialog(
+        showDialogAlertWidget(
           context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('Error Occured!'),
-              content: Text(error.toString()),
-              actions: [
-                FlatButton(
-                    child: Text('OK'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    }),
-              ],
-            );
-          },
+          error: error,
+          title: 'Error Occured!',
         );
       }
     }
@@ -154,6 +139,7 @@ class _GoogleAuthRoleScreenState extends State<GoogleAuthRoleScreen> {
                     items: <String>[
                       'Select Role',
                       'Organization',
+                      'Donator',
                       'Receiver',
                       'Delivery man',
                     ].map<DropdownMenuItem<String>>((String value) {

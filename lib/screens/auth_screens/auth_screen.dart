@@ -6,6 +6,7 @@ import 'package:food_wastage_management/screens/home_screen.dart';
 import 'package:food_wastage_management/widgets/clipper_widgets/auth_clip_widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_wastage_management/widgets/progress_widget.dart';
+import 'package:food_wastage_management/widgets/show_dialog_alert_widget.dart';
 import 'package:provider/provider.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -47,15 +48,15 @@ class _AuthScreenState extends State<AuthScreen> {
             email: email,
             password: password,
           )
-              .then((user) {
+              .then((_) {
+            setState(() {
+              _isLoading = false;
+            });
+
             _emailController.clear();
             _passwordController.clear();
 
-            if (user != null) {
-              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-            } else {
-              Navigator.of(context).pushReplacementNamed(AuthScreen.routeName);
-            }
+            Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
           }).catchError((error) {
             setState(() {
               _isLoading = false;
@@ -64,22 +65,10 @@ class _AuthScreenState extends State<AuthScreen> {
             _emailController.clear();
             _passwordController.clear();
 
-            showDialog(
+            showDialogAlertWidget(
               context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text('Error Occured!'),
-                  content: Text(error.toString()),
-                  actions: [
-                    FlatButton(
-                      child: Text('OK'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
+              error: error,
+              title: 'Error Occured!',
             );
           });
         } else {
@@ -90,17 +79,17 @@ class _AuthScreenState extends State<AuthScreen> {
             email: email,
             password: password,
           )
-              .then((user) {
+              .then((_) {
+            setState(() {
+              _isLoading = false;
+            });
+
             _nameController.clear();
             _emailController.clear();
             _passwordController.clear();
             _reTypePasswordController.clear();
 
-            if (user != null) {
-              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-            } else {
-              Navigator.of(context).pushReplacementNamed(AuthScreen.routeName);
-            }
+            Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
           }).catchError((error) {
             setState(() {
               _isLoading = false;
@@ -111,22 +100,10 @@ class _AuthScreenState extends State<AuthScreen> {
             _passwordController.clear();
             _reTypePasswordController.clear();
 
-            showDialog(
+            showDialogAlertWidget(
               context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text('Error Occured!'),
-                  content: Text(error.toString()),
-                  actions: [
-                    FlatButton(
-                      child: Text('OK'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
+              error: error,
+              title: 'Error Occured!',
             );
           });
         }
@@ -135,22 +112,10 @@ class _AuthScreenState extends State<AuthScreen> {
           _isLoading = false;
         });
 
-        showDialog(
+        showDialogAlertWidget(
           context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('Error Occured!'),
-              content: Text(error.toString()),
-              actions: [
-                FlatButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
+          error: error,
+          title: 'Error Occured!',
         );
       }
     }
@@ -273,6 +238,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   items: <String>[
                                     'Select Role',
                                     'Organization',
+                                    'Donator',
                                     'Receiver',
                                     'Delivery man',
                                   ].map<DropdownMenuItem<String>>(

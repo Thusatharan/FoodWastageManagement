@@ -41,6 +41,12 @@ dependencies:
   flutter_svg: ^0.19.1
   flutter_custom_clippers: ^1.1.2
   image_picker: ^0.6.7+17
+  path_provider: ^1.6.24
+  image: ^2.1.19
+  firebase_storage: ^5.2.0
+  uuid: ^2.2.2
+  rflutter_alert: ^1.1.0
+
 
 dev_dependencies:
   flutter_test:

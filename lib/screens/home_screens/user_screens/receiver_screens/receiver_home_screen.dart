@@ -254,7 +254,7 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
                         RatingStars(food.organizationRating, 18.0),
                         SizedBox(height: 4.0),
                         Text(
-                          food.organizationLocation,
+                          food.organizationAddress,
                           style: TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.w600,

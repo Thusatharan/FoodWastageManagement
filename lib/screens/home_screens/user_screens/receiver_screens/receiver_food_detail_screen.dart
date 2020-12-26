@@ -163,7 +163,7 @@ class _ReceiverFoodDetailScreenState extends State<ReceiverFoodDetailScreen> {
                 RatingStars(_food.organizationRating, 18.0),
                 SizedBox(height: 6.0),
                 Text(
-                  _food.organizationLocation,
+                  _food.organizationAddress,
                   style: TextStyle(
                     fontSize: 18.0,
                   ),

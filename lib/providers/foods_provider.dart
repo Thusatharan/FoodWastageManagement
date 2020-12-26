@@ -1,58 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:food_wastage_management/models/food.dart';
+import 'package:food_wastage_management/models/organization.dart';
+import 'package:food_wastage_management/screens/home_screen.dart';
+import 'package:intl/intl.dart';
 
 class Foods with ChangeNotifier {
-  List<Food> _foods = [
-    Food(
-      id: 'f1',
-      name: 'Fright Rice',
-      imageUrl: 'https://i.ytimg.com/vi/PNpVCrIlnPg/maxresdefault.jpg',
-      available: '20',
-      organizationId: 'd1',
-      organizationName: 'US Hotels',
-      organizationRating: 5,
-      organizationLocation: 'Jaffna',
-    ),
-    Food(
-      id: 'f2',
-      name: 'Noodles',
-      imageUrl:
-          'https://1.bp.blogspot.com/-VHvXydZxFmA/XpFd73m4GjI/AAAAAAAARKA/FkiRpKMnAVodpITwKXED8DIfkMPcrQFowCLcBGAsYHQ/s1600/Teriyaki-Noodles-1.jpg',
-      available: '38',
-      organizationId: 'd2',
-      organizationName: 'Rolex',
-      organizationRating: 3,
-      organizationLocation: 'Colombo',
-    ),
-    Food(
-      id: 'f3',
-      name: 'Pasta',
-      imageUrl: 'https://sparkpeo.hs.llnwd.net/e4/nw/7/9/l790811918.jpg',
-      available: '15',
-      organizationId: 'd1',
-      organizationName: 'Green Grass',
-      organizationRating: 4,
-      organizationLocation: 'Jaffna',
-    ),
-    Food(
-      id: 'f4',
-      name: 'Rice and Curry',
-      imageUrl:
-          'https://www.knorr.lk/Images/2809/2809-863142-the-art-of-sri-lankan-cooking-580x326.jpg',
-      available: '25',
-      organizationId: 'd2',
-      organizationName: 'Selva Restaurant',
-      organizationRating: 2,
-      organizationLocation: 'Kokuvil',
-    ),
-  ];
+  final _timestamp = DateTime.now();
+
+  List<Food> _foods = [];
 
   List<Food> get foods {
     return [..._foods];
   }
 
-  // begin organization home screen
+  // begin fetch organization foods from firestore
+  Future<void> fetchAndSetOrganizationFoods({String organizationId}) async {
+    try {
+      final docsCollection = await organizationFoodRef
+          .doc(organizationId)
+          .collection('organizationFoods')
+          .get();
+      final List<Food> loadedFoods = [];
+      docsCollection.docs.forEach((fd) {
+        loadedFoods.add(
+          Food(
+            id: fd['id'],
+            name: fd['name'],
+            available: fd['available'],
+            expireTime: fd['expireTime'],
+            imageUrl: fd['imageUrl'],
+            organizationId: fd['organizationId'],
+            organizationName: fd['organizationName'],
+            organizationRating: int.tryParse(fd['organizationRating']) ?? 0,
+            organizationAddress: fd['organizationAddress'],
+          ),
+        );
+      });
 
+      _foods = loadedFoods;
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
+  }
+  // end fetch organization foods from firestore
+
+  // begin organization home screen
   bool isOrganizationRegistered(String id) {
     return _foods.any((fd) => fd.organizationId == id);
   }
@@ -60,15 +53,128 @@ class Foods with ChangeNotifier {
   List<Food> organizationFood(String id) {
     return _foods.where((fd) => fd.organizationId == id).toList();
   }
-
   // end organization home screen
 
   Food findById(String id) {
     return _foods.firstWhere((fd) => fd.id == id);
   }
 
-  addFood() {
-    // add new food
-    notifyListeners();
+  Future<void> addFood({
+    String id,
+    String name,
+    String imageUrl,
+    String available,
+    String expireTime,
+    String organizationId,
+  }) async {
+    final organizationDoc = await organizationRef.doc(organizationId).get();
+    Organization organization = Organization.fromDocument(organizationDoc);
+    return organizationFoodRef
+        .doc(organizationId)
+        .collection('organizationFoods')
+        .doc(id)
+        .set({
+      'id': id,
+      'name': name,
+      'imageUrl': imageUrl,
+      'available': available,
+      'expireTime': expireTime,
+      'organizationId': organizationId,
+      'organizationAddress': organization.address,
+      'organizationName': organization.name,
+      'organizationRating': organization.rating.toString(),
+      'createdAt': DateFormat('dd/MM/yyyy hh:mm a').format(_timestamp),
+    }).then((_) {
+      userFoodRef.doc(id).set({
+        'id': id,
+        'name': name,
+        'imageUrl': imageUrl,
+        'available': available,
+        'expireTime': expireTime,
+        'organizationId': organizationId,
+        'organizationAddress': organization.address,
+        'organizationName': organization.name,
+        'organizationRating': organization.rating.toString(),
+        'createdAt': DateFormat('dd/MM/yyyy hh:mm a').format(_timestamp),
+      }).then((_) {
+        final newFood = Food(
+          id: id,
+          name: name,
+          imageUrl: imageUrl,
+          available: available,
+          expireTime: expireTime,
+          organizationId: organizationId,
+          organizationAddress: organization.address,
+          organizationName: organization.name,
+          organizationRating: organization.rating,
+        );
+
+        _foods.add(newFood);
+        notifyListeners();
+      }).catchError((error) {
+        throw error;
+      });
+    });
   }
+
+  // begin delete food data
+  Future<void> deleteFood({String organizationId, String foodId}) {
+    final _existingFoodIndex = _foods.indexWhere((fd) => fd.id == foodId);
+    var _existingFood = _foods[_existingFoodIndex];
+    _foods.removeAt(_existingFoodIndex);
+    notifyListeners();
+
+    return organizationFoodRef
+        .doc(organizationId)
+        .collection('organizationFoods')
+        .doc(foodId)
+        .get()
+        .then((doc) {
+      if (doc.exists) {
+        doc.reference.delete();
+      }
+    }).then((_) {
+      userRef.doc(foodId).get().then((doc) {
+        if (doc.exists) {
+          doc.reference.delete();
+        }
+      });
+    }).catchError((error) {
+      _foods.insert(_existingFoodIndex, _existingFood);
+      notifyListeners();
+      throw error;
+    }).then((_) {
+      _existingFood = null;
+    });
+  }
+  // end delete food data
+
+  // begin update food data
+  Future<void> updateFood({
+    String foodId,
+    String organizationId,
+    String newName,
+    String newCount,
+    String newExpireTime,
+  }) async {
+    await organizationFoodRef
+        .doc(organizationId)
+        .collection('organizationFoods')
+        .doc(foodId)
+        .update({
+      'name': newName,
+      'available': newCount,
+      'expireTime': newExpireTime,
+    }).then((_) {
+      userFoodRef.doc(foodId).update({
+        'name': newName,
+        'available': newCount,
+        'expireTime': newExpireTime,
+      }).catchError((error) {
+        throw error;
+      });
+    });
+  }
+  // end update food data
+
 }
