@@ -7,6 +7,7 @@ import 'package:food_wastage_management/providers/foods_provider.dart';
 import 'package:food_wastage_management/providers/organization_provider.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/receiver_food_detail_screen.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/receiver_screens/receiver_profile_screen.dart';
+import 'package:food_wastage_management/widgets/progress_widget.dart';
 import 'package:food_wastage_management/widgets/rating_stars_widget.dart';
 import 'package:food_wastage_management/widgets/receivers_widgets/organization_search_widget.dart';
 import 'package:food_wastage_management/widgets/receivers_widgets/organization_widget.dart';
@@ -75,6 +76,7 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
                   style: TextStyle(
                     fontSize: isPotrait ? 30.0 : 25.0,
                     fontWeight: FontWeight.w600,
+                    fontFamily: 'Arima',
                     color: Theme.of(context).accentColor,
                   ),
                 ),
@@ -280,10 +282,6 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
   Widget build(BuildContext context) {
     final _isPotrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
-    final List<Food> foods = Provider.of<Foods>(
-      context,
-      listen: false,
-    ).foods;
     return Scaffold(
       bottomNavigationBar: BubbleBottomBar(
         opacity: 0.2,
@@ -333,44 +331,56 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
         ],
       ),
       body: (_currentIndex == 0)
-          ? SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.bottomLeft,
-                    margin: EdgeInsets.fromLTRB(
-                        20.0, _isPotrait ? 80.0 : 50.0, 20.0, 20.0),
-                    child: Text(
-                      'Welcome back',
-                      style: TextStyle(
-                        fontSize: 30.0,
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Arima',
-                      ),
-                    ),
-                  ),
-                  OrganizationsWidget(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          ? FutureBuilder(
+              future: Provider.of<Foods>(context, listen: false)
+                  .fetchAndSetUserFoods(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return circularProgress();
+                }
+                return SingleChildScrollView(
+                  child: Column(
                     children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+                      Container(
+                        alignment: Alignment.bottomLeft,
+                        margin: EdgeInsets.fromLTRB(
+                            20.0, _isPotrait ? 80.0 : 50.0, 20.0, 20.0),
                         child: Text(
-                          'Recent Posts',
+                          'Welcome back',
                           style: TextStyle(
-                            fontSize: 24.0,
+                            fontSize: 30.0,
+                            color: Colors.blue,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Arima',
                           ),
                         ),
                       ),
-                      _buildFoods(foods: foods),
+                      OrganizationsWidget(),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                20.0, 20.0, 20.0, 0.0),
+                            child: Text(
+                              'Recent Posts',
+                              style: TextStyle(
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Arima',
+                              ),
+                            ),
+                          ),
+                          Consumer<Foods>(
+                            builder: (context, data, child) =>
+                                _buildFoods(foods: data.foods),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                ],
-              ),
+                );
+              },
             )
           : (_currentIndex == 1)
               ? _searchScreen(_isPotrait)

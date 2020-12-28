@@ -7,7 +7,8 @@ class ReceiverFoodDetailScreen extends StatefulWidget {
   static const routeName = '/receiver_food_detail_screen';
 
   @override
-  _ReceiverFoodDetailScreenState createState() => _ReceiverFoodDetailScreenState();
+  _ReceiverFoodDetailScreenState createState() =>
+      _ReceiverFoodDetailScreenState();
 }
 
 class _ReceiverFoodDetailScreenState extends State<ReceiverFoodDetailScreen> {
@@ -114,24 +115,13 @@ class _ReceiverFoodDetailScreenState extends State<ReceiverFoodDetailScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 10.0, vertical: 60.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back),
-                      color: Colors.white,
-                      iconSize: 30.0,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.favorite),
-                      color: Theme.of(context).primaryColor,
-                      iconSize: 35.0,
-                      onPressed: () {},
-                    ),
-                  ],
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  color: Theme.of(context).primaryColor,
+                  iconSize: 30.0,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
               ),
             ],
@@ -152,9 +142,10 @@ class _ReceiverFoodDetailScreenState extends State<ReceiverFoodDetailScreen> {
                       ),
                     ),
                     Text(
-                      '0.2 miles away',
+                      'Available parcels: ' + _food.available,
                       style: TextStyle(
                         fontSize: 18.0,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
@@ -163,7 +154,7 @@ class _ReceiverFoodDetailScreenState extends State<ReceiverFoodDetailScreen> {
                 RatingStars(_food.organizationRating, 18.0),
                 SizedBox(height: 6.0),
                 Text(
-                  _food.organizationAddress,
+                  _food.expireTime,
                   style: TextStyle(
                     fontSize: 18.0,
                   ),
@@ -196,7 +187,7 @@ class _ReceiverFoodDetailScreenState extends State<ReceiverFoodDetailScreen> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Text(
-                  'Contact',
+                  'Request',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,
@@ -209,7 +200,7 @@ class _ReceiverFoodDetailScreenState extends State<ReceiverFoodDetailScreen> {
           SizedBox(height: 10.0),
           Center(
             child: Text(
-              'Menu',
+              'Food Details',
               style: TextStyle(
                 fontSize: 22.0,
                 fontWeight: FontWeight.w600,
@@ -218,16 +209,7 @@ class _ReceiverFoodDetailScreenState extends State<ReceiverFoodDetailScreen> {
             ),
           ),
           SizedBox(height: 10.0),
-          //Expanded(
-          //  child: GridView.count(
-          //    padding: EdgeInsets.all(10.0),
-          //    crossAxisCount: 2,
-          //    children: List.generate(widget.organization.menu.length, (index) {
-          //      Food food = widget.organization.menu[index];
-          //      return _buildMenuItem(food);
-          //    }),
-          //  ),
-          //),
+          
         ],
       ),
     );

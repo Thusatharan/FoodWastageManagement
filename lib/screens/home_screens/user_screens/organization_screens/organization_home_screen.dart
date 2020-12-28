@@ -60,8 +60,9 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 25.0,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
                     color: Colors.blue,
+                    fontFamily: 'Arima',
                   ),
                 ),
               ),
@@ -114,7 +115,7 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
                     fontSize: 30.0,
                     color: Colors.indigo,
                     fontWeight: FontWeight.bold,
-                    letterSpacing: 1.2,
+                    fontFamily: 'Arima',
                   ),
                 ),
               ),
@@ -126,10 +127,9 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
                     child: Text(
                       'My Donates',
                       style: TextStyle(
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                        letterSpacing: 1.2,
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Arima',
                       ),
                     ),
                   ),
@@ -183,68 +183,69 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
     );
 
     return Alert(
-        context: context,
-        style: alertStyle,
-        title: "Select Food Image",
-        content: Column(
-          children: <Widget>[
-            Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Icon(
-                  Icons.camera_alt,
-                  color: Colors.black54,
-                ),
-                FlatButton(
-                  child: Text(
-                    'Capture with camera',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  onPressed: () => _pickImage(ImageSource.camera),
-                ),
-              ],
-            ),
-            Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Icon(
-                  Icons.folder,
-                  color: Colors.black54,
-                ),
-                FlatButton(
-                  child: Text(
-                    'Select From Gallery',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  onPressed: () => _pickImage(ImageSource.gallery),
-                ),
-              ],
-            ),
-            Divider(),
-          ],
-        ),
-        buttons: [
-          DialogButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              "Cancel",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
+      context: context,
+      style: alertStyle,
+      title: "Select Food Image",
+      content: Column(
+        children: <Widget>[
+          Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Icon(
+                Icons.camera_alt,
+                color: Colors.black54,
               ),
+              FlatButton(
+                child: Text(
+                  'Capture with camera',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
+                onPressed: () => _pickImage(ImageSource.camera),
+              ),
+            ],
+          ),
+          Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Icon(
+                Icons.folder,
+                color: Colors.black54,
+              ),
+              FlatButton(
+                child: Text(
+                  'Select From Gallery',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
+                onPressed: () => _pickImage(ImageSource.gallery),
+              ),
+            ],
+          ),
+          Divider(),
+        ],
+      ),
+      buttons: [
+        DialogButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(
+            "Cancel",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
             ),
-            gradient: LinearGradient(colors: [
-              Color.fromRGBO(116, 116, 191, 1.0),
-              Color.fromRGBO(52, 138, 199, 1.0)
-            ]),
-          )
-        ]).show();
+          ),
+          gradient: LinearGradient(colors: [
+            Color.fromRGBO(116, 116, 191, 1.0),
+            Color.fromRGBO(52, 138, 199, 1.0)
+          ]),
+        )
+      ],
+    ).show();
   }
 
   _buildAddFoodScreen(BuildContext context) async {
@@ -271,7 +272,7 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
         style: alertStyle,
         type: AlertType.info,
         title: 'Alert Message!',
-        desc: 'Please register your organization to create Post',
+        desc: 'Please register your organization to create Posts',
         buttons: [
           DialogButton(
             child: Text(

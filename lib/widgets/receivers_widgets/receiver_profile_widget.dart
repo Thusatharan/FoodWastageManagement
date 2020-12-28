@@ -10,14 +10,15 @@ class ReceiverProfileWidget extends StatelessWidget {
   final String address;
   final String about;
 
-  ReceiverProfileWidget(
-      {@required this.id,
-      @required this.name,
-      @required this.email,
-      this.image,
-      this.mobile,
-      this.address,
-      this.about});
+  ReceiverProfileWidget({
+    @required this.id,
+    @required this.name,
+    @required this.email,
+    this.image,
+    this.mobile,
+    this.address,
+    this.about,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -6,11 +6,13 @@ import 'package:food_wastage_management/providers/organization_provider.dart';
 import 'package:food_wastage_management/screens/home_screen.dart';
 import 'package:food_wastage_management/widgets/clipper_widgets/profile_clipper.dart';
 import 'package:food_wastage_management/widgets/progress_widget.dart';
+import 'package:food_wastage_management/widgets/show_dialog_alert_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as Im;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class OrganizationRegisterScreen extends StatefulWidget {
   static const routeName = '/organization_register_screen';
@@ -151,54 +153,139 @@ class _OrganizationRegisterScreenState
         _image = File(pickedFile.path);
       });
       Navigator.pop(context);
+    }).catchError((error){
+      showDialogAlertWidget(
+        context: context,
+        error: error,
+        title: 'Error Message!',
+      );
     });
   }
 
   _pickImage(BuildContext context) {
-    return showDialog(
+    var alertStyle = AlertStyle(
+      isCloseButton: false,
+      isOverlayTapDismiss: false,
+      descTextAlign: TextAlign.center,
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      titleStyle: TextStyle(
+        color: Colors.indigo,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+
+    return Alert(
       context: context,
-      builder: (context) {
-        return SimpleDialog(
-          title: Text(
-            'Organization Image',
+      style: alertStyle,
+      title: "Select Organization Image",
+      content: Column(
+        children: <Widget>[
+          Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Icon(
+                Icons.camera_alt,
+                color: Colors.black54,
+              ),
+              FlatButton(
+                child: Text(
+                  'Capture with camera',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
+                onPressed: () => _getImage(ImageSource.camera),
+              ),
+            ],
+          ),
+          Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Icon(
+                Icons.folder,
+                color: Colors.black54,
+              ),
+              FlatButton(
+                child: Text(
+                  'Select From Gallery',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
+                onPressed: () => _getImage(ImageSource.gallery),
+              ),
+            ],
+          ),
+          Divider(),
+        ],
+      ),
+      buttons: [
+        DialogButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(
+            "Cancel",
             style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontSize: 20,
             ),
           ),
-          children: [
-            SimpleDialogOption(
-              child: Text(
-                'Capture with camera',
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              onPressed: () => _getImage(ImageSource.camera),
-            ),
-            SimpleDialogOption(
-              child: Text(
-                'Select From Gallery',
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              onPressed: () => _getImage(ImageSource.gallery),
-            ),
-            Divider(),
-            SimpleDialogOption(
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        );
-      },
-    );
+          gradient: LinearGradient(colors: [
+            Color.fromRGBO(116, 116, 191, 1.0),
+            Color.fromRGBO(52, 138, 199, 1.0)
+          ]),
+        )
+      ],
+    ).show();
+    
+    
+    //showDialog(
+    //  context: context,
+    //  builder: (context) {
+    //    return SimpleDialog(
+    //      title: Text(
+    //        'Organization Image',
+    //        style: TextStyle(
+    //          color: Theme.of(context).primaryColor,
+    //          fontWeight: FontWeight.bold,
+    //        ),
+    //      ),
+    //      children: [
+    //        SimpleDialogOption(
+    //          child: Text(
+    //            'Capture with camera',
+    //            style: TextStyle(
+    //              color: Colors.black,
+    //            ),
+    //          ),
+    //          onPressed: () => _getImage(ImageSource.camera),
+    //        ),
+    //        SimpleDialogOption(
+    //          child: Text(
+    //            'Select From Gallery',
+    //            style: TextStyle(
+    //              color: Colors.black,
+    //            ),
+    //          ),
+    //          onPressed: () => _getImage(ImageSource.gallery),
+    //        ),
+    //        Divider(),
+    //        SimpleDialogOption(
+    //          child: Text(
+    //            'Cancel',
+    //            style: TextStyle(
+    //              color: Colors.black,
+    //            ),
+    //          ),
+    //          onPressed: () => Navigator.pop(context),
+    //        ),
+    //      ],
+    //    );
+    //  },
+    //);
   }
 
   /* ********************************************************* */

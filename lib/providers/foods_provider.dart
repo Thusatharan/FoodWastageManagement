@@ -13,6 +13,35 @@ class Foods with ChangeNotifier {
     return [..._foods];
   }
 
+  // begin fetch user foods from firestore
+  Future<void> fetchAndSetUserFoods() async {
+    try {
+      final docsCollection = await userFoodRef.get();
+      final List<Food> loadedFoods = [];
+      docsCollection.docs.forEach((fd) {
+        loadedFoods.add(
+          Food(
+            id: fd['id'],
+            name: fd['name'],
+            available: fd['available'],
+            expireTime: fd['expireTime'],
+            imageUrl: fd['imageUrl'],
+            organizationId: fd['organizationId'],
+            organizationName: fd['organizationName'],
+            organizationRating: int.tryParse(fd['organizationRating']) ?? 0,
+            organizationAddress: fd['organizationAddress'],
+          ),
+        );
+      });
+
+      _foods = loadedFoods;
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
+  }
+  // end fetch user foods from firestore
+
   // begin fetch organization foods from firestore
   Future<void> fetchAndSetOrganizationFoods({String organizationId}) async {
     try {
