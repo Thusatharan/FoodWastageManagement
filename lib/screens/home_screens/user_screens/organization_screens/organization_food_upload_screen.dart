@@ -99,7 +99,7 @@ class _OrganizationFoodUploadScreenState
 
         showDialogAlertWidget(
           context: context,
-          error: error,
+          error: error.message,
           title: 'Error Occured!',
         );
       });

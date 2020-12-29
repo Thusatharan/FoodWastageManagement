@@ -49,8 +49,9 @@ class _OrganizationRegisterScreenState
   }
 
   Future<String> _uploadImage(image) async {
-    UploadTask _uploadTask =
-        storageRef.child('organizations/post_${_currentUser.uid}.jpg').putFile(_image);
+    UploadTask _uploadTask = storageRef
+        .child('organizations/post_${_currentUser.uid}.jpg')
+        .putFile(_image);
     TaskSnapshot _storageSnap = await _uploadTask;
     String _downloadUrl = await _storageSnap.ref.getDownloadURL();
     return _downloadUrl;
@@ -61,28 +62,66 @@ class _OrganizationRegisterScreenState
     FocusScope.of(context).unfocus();
 
     if (_image == null) {
-      return showDialog(
+
+      var alertStyle = AlertStyle(
+        isCloseButton: false,
+        isOverlayTapDismiss: false,
+        descTextAlign: TextAlign.center,
+        alertBorder: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        titleStyle: TextStyle(
+          color: Colors.blue,
+        ),
+      );
+
+      return Alert(
         context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              'validation Error',
+        style: alertStyle,
+        type: AlertType.info,
+        title: 'validation Error',
+        desc: 'You must upload organization image',
+        buttons: [
+          DialogButton(
+            child: Text(
+              "OK",
               style: TextStyle(
-                color: Theme.of(context).primaryColor,
+                color: Colors.white,
+                fontSize: 20,
               ),
             ),
-            content: Text('You must upload organization image'),
-            actions: [
-              FlatButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+            onPressed: () => Navigator.pop(context),
+            width: 120,
+            gradient: LinearGradient(colors: [
+              Color.fromRGBO(116, 116, 191, 1.0),
+              Color.fromRGBO(52, 138, 199, 1.0)
+            ]),
+          )
+        ],
+      ).show();
+      
+      //showDialog(
+      //  context: context,
+      //  builder: (context) {
+      //    return AlertDialog(
+      //      title: Text(
+      //        'validation Error',
+      //        style: TextStyle(
+      //          color: Theme.of(context).primaryColor,
+      //        ),
+      //      ),
+      //      content: Text('You must upload organization image'),
+      //      actions: [
+      //        FlatButton(
+      //          child: Text('OK'),
+      //          onPressed: () {
+      //            Navigator.of(context).pop();
+      //          },
+      //        ),
+      //      ],
+      //    );
+      //  },
+      //);
     }
 
     if (_isValid && _image != null) {
@@ -124,22 +163,10 @@ class _OrganizationRegisterScreenState
           _numberController.clear();
         });
 
-        showDialog(
+        showDialogAlertWidget(
           context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('Error Occured!'),
-              content: Text(error.toString()),
-              actions: [
-                FlatButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
+          error: error.message,
+          title: 'Error Message!',
         );
       });
     }
@@ -153,10 +180,10 @@ class _OrganizationRegisterScreenState
         _image = File(pickedFile.path);
       });
       Navigator.pop(context);
-    }).catchError((error){
+    }).catchError((error) {
       showDialogAlertWidget(
         context: context,
-        error: error,
+        error: error.message,
         title: 'Error Message!',
       );
     });
@@ -240,52 +267,6 @@ class _OrganizationRegisterScreenState
         )
       ],
     ).show();
-    
-    
-    //showDialog(
-    //  context: context,
-    //  builder: (context) {
-    //    return SimpleDialog(
-    //      title: Text(
-    //        'Organization Image',
-    //        style: TextStyle(
-    //          color: Theme.of(context).primaryColor,
-    //          fontWeight: FontWeight.bold,
-    //        ),
-    //      ),
-    //      children: [
-    //        SimpleDialogOption(
-    //          child: Text(
-    //            'Capture with camera',
-    //            style: TextStyle(
-    //              color: Colors.black,
-    //            ),
-    //          ),
-    //          onPressed: () => _getImage(ImageSource.camera),
-    //        ),
-    //        SimpleDialogOption(
-    //          child: Text(
-    //            'Select From Gallery',
-    //            style: TextStyle(
-    //              color: Colors.black,
-    //            ),
-    //          ),
-    //          onPressed: () => _getImage(ImageSource.gallery),
-    //        ),
-    //        Divider(),
-    //        SimpleDialogOption(
-    //          child: Text(
-    //            'Cancel',
-    //            style: TextStyle(
-    //              color: Colors.black,
-    //            ),
-    //          ),
-    //          onPressed: () => Navigator.pop(context),
-    //        ),
-    //      ],
-    //    );
-    //  },
-    //);
   }
 
   /* ********************************************************* */

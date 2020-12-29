@@ -10,7 +10,7 @@ showDialogAlertWidget({BuildContext context, String title, error}) {
       borderRadius: BorderRadius.circular(15.0),
     ),
     titleStyle: TextStyle(
-      color: Colors.red,
+      color: Colors.blue,
     ),
   );
 
@@ -39,21 +39,4 @@ showDialogAlertWidget({BuildContext context, String title, error}) {
     ],
   ).show();
 
-  //showDialog(
-  //  context: context,
-  //  builder: (context) {
-  //    return AlertDialog(
-  //      title: Text(title),
-  //      content: Text(error.toString()),
-  //      actions: [
-  //        FlatButton(
-  //          child: Text('OK'),
-  //          onPressed: () {
-  //            Navigator.of(context).pop();
-  //          },
-  //        ),
-  //      ],
-  //    );
-  //  },
-  //);
 }

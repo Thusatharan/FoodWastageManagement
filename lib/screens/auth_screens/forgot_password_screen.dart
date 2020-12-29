@@ -56,7 +56,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
           showDialogAlertWidget(
             context: context,
-            error: error,
+            error: error.message,
             title: 'Error Message!',
           );
         });

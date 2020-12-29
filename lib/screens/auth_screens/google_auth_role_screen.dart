@@ -47,7 +47,7 @@ class _GoogleAuthRoleScreenState extends State<GoogleAuthRoleScreen> {
 
         showDialogAlertWidget(
           context: context,
-          error: error,
+          error: error.message,
           title: 'Error Message!',
         );
       }

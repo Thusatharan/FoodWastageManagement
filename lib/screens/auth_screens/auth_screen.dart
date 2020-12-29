@@ -67,7 +67,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
             showDialogAlertWidget(
               context: context,
-              error: error,
+              error: error.message,
               title: 'Error Message!',
             );
           });
@@ -102,7 +102,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
             showDialogAlertWidget(
               context: context,
-              error: error,
+              error: error.message,
               title: 'Error Message!',
             );
           });
@@ -114,7 +114,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
         showDialogAlertWidget(
           context: context,
-          error: error,
+          error: error.message,
           title: 'Error Message!',
         );
       }

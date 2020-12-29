@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_wastage_management/providers/foods_provider.dart';
 import 'package:food_wastage_management/widgets/rating_stars_widget.dart';
 import 'package:provider/provider.dart';
@@ -116,7 +117,7 @@ class _ReceiverFoodDetailScreenState extends State<ReceiverFoodDetailScreen> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 10.0, vertical: 60.0),
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: Icon(FontAwesomeIcons.arrowCircleLeft),
                   color: Theme.of(context).primaryColor,
                   iconSize: 30.0,
                   onPressed: () {
