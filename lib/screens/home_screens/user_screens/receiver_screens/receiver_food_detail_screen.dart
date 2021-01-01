@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:food_wastage_management/providers/foods_provider.dart';
+import 'package:food_wastage_management/providers/food_provider.dart';
 import 'package:food_wastage_management/widgets/rating_stars_widget.dart';
 import 'package:provider/provider.dart';
 

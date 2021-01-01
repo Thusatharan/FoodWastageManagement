@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_wastage_management/models/food.dart';
-import 'package:food_wastage_management/providers/foods_provider.dart';
+import 'package:food_wastage_management/providers/food_provider.dart';
 import 'package:food_wastage_management/screens/home_screens/user_screens/organization_screens/organization_edit_screen.dart';
 import 'package:food_wastage_management/widgets/show_dialog_alert_widget.dart';
 import 'package:provider/provider.dart';

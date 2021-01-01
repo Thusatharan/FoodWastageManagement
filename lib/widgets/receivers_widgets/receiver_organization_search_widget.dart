@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:food_wastage_management/models/organization.dart';
 import 'package:food_wastage_management/widgets/rating_stars_widget.dart';
 
-class SearchOrganizationWidget extends StatelessWidget {
+class ReceiverOrganizationSearchWidget extends StatelessWidget {
   final Organization organization;
-  SearchOrganizationWidget(this.organization);
+  ReceiverOrganizationSearchWidget(this.organization);
 
   @override
   Widget build(BuildContext context) {

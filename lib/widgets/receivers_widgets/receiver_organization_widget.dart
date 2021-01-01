@@ -4,7 +4,7 @@ import 'package:food_wastage_management/providers/organization_provider.dart';
 import 'package:food_wastage_management/widgets/rating_stars_widget.dart';
 import 'package:provider/provider.dart';
 
-class OrganizationsWidget extends StatelessWidget {
+class ReceiverOrganizationsWidget extends StatelessWidget {
   _buildRecentOrder(BuildContext context, Organization organization) {
     return GestureDetector(
       onTap: () {},

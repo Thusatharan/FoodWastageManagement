@@ -35,10 +35,15 @@ class _GoogleAuthRoleScreenState extends State<GoogleAuthRoleScreen> {
             .googleSignIn(roleName: roleName)
             .then((_) {
           Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-        }).catchError((_) {
+        }).catchError((error) {
           setState(() {
             _isLoading = false;
           });
+          showDialogAlertWidget(
+            context: context,
+            error: error.message,
+            title: 'Error Message!',
+          );
         });
       } catch (error) {
         setState(() {

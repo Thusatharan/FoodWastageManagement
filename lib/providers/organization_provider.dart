@@ -7,32 +7,32 @@ class Organizations with ChangeNotifier {
   final _timestamp = DateTime.now();
 
   List<Organization> _organizations = [
-    Organization(
-      id: 'd1',
-      name: 'US Hotels',
-      address: 'Jaffna',
-      contactNo: '0762596548',
-      imageUrl:
-          'https://www.uplist.lk/wp-content/uploads/2019/06/US-Hotel-Jaffna.jpg',
-      rating: 5,
-    ),
-    Organization(
-      id: 'd2',
-      name: 'Green Grass Wedding Hall',
-      address: 'Jaffna',
-      contactNo: '0762596548',
-      imageUrl: 'https://pbs.twimg.com/media/Dvb7IB3XQAA0BGn.jpg',
-      rating: 4,
-    ),
-    Organization(
-      id: 'd3',
-      name: 'Rolex',
-      address: 'Jaffna',
-      contactNo: '0762596548',
-      imageUrl:
-          'https://www.uplist.lk/wp-content/uploads/2019/06/US-Hotel-Jaffna.jpg',
-      rating: 3,
-    ),
+    //Organization(
+    //  id: 'd1',
+    //  name: 'US Hotels',
+    //  address: 'Jaffna',
+    //  contactNo: '0762596548',
+    //  imageUrl:
+    //      'https://www.uplist.lk/wp-content/uploads/2019/06/US-Hotel-Jaffna.jpg',
+    //  rating: 5,
+    //),
+    //Organization(
+    //  id: 'd2',
+    //  name: 'Green Grass Wedding Hall',
+    //  address: 'Jaffna',
+    //  contactNo: '0762596548',
+    //  imageUrl: 'https://pbs.twimg.com/media/Dvb7IB3XQAA0BGn.jpg',
+    //  rating: 4,
+    //),
+    //Organization(
+    //  id: 'd3',
+    //  name: 'Rolex',
+    //  address: 'Jaffna',
+    //  contactNo: '0762596548',
+    //  imageUrl:
+    //      'https://www.uplist.lk/wp-content/uploads/2019/06/US-Hotel-Jaffna.jpg',
+    //  rating: 3,
+    //),
   ];
 
   List<Organization> get organizations {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_wastage_management/providers/auth_provider.dart';
-import 'package:food_wastage_management/providers/foods_provider.dart';
+import 'package:food_wastage_management/providers/food_provider.dart';
 import 'package:food_wastage_management/providers/organization_provider.dart';
+import 'package:food_wastage_management/providers/receiver_provider.dart';
+import 'package:food_wastage_management/providers/request_provider.dart';
 import 'package:food_wastage_management/screens/auth_screens/auth_screen.dart';
 import 'package:food_wastage_management/screens/auth_screens/forgot_password_screen.dart';
 import 'package:food_wastage_management/screens/auth_screens/google_auth_role_screen.dart';
@@ -37,6 +39,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: Foods(),
+        ),
+        ChangeNotifierProvider.value(
+          value: Requests(),
+        ),
+        ChangeNotifierProvider.value(
+          value: Receivers(),
         ),
       ],
       child: MaterialApp(
