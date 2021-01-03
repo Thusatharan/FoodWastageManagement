@@ -1,21 +1,21 @@
 class DeliveryMan {
   final String id;
-  final String deliveyManName;
-  final String deliveyManAddress;
-  final String deliveryManImageUrl;
+  final String name;
+  final String address;
+  final String imageUrl;
   final String drivingLicenceFrontImageUrl;
   final String drivingLicenceBackImageUrl;
-  final String deliveryManContactNo;
+  final String contactNo;
   final double amountFor1km;
 
   DeliveryMan({
     this.id,
-    this.deliveyManName,
-    this.deliveyManAddress,
-    this.deliveryManImageUrl,
+    this.name,
+    this.address,
+    this.imageUrl,
     this.drivingLicenceFrontImageUrl,
     this.drivingLicenceBackImageUrl,
-    this.deliveryManContactNo,
+    this.contactNo,
     this.amountFor1km,
   });
 }

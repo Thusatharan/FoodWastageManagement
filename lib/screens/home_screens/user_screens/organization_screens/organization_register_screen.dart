@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_wastage_management/providers/organization_provider.dart';
 import 'package:food_wastage_management/screens/home_screen.dart';
+import 'package:food_wastage_management/screens/home_screens/user_screens/organization_screens/organization_home_screen.dart';
 import 'package:food_wastage_management/widgets/clipper_widgets/profile_clipper.dart';
 import 'package:food_wastage_management/widgets/progress_widget.dart';
 import 'package:food_wastage_management/widgets/show_dialog_alert_widget.dart';
@@ -62,7 +63,6 @@ class _OrganizationRegisterScreenState
     FocusScope.of(context).unfocus();
 
     if (_image == null) {
-
       var alertStyle = AlertStyle(
         isCloseButton: false,
         isOverlayTapDismiss: false,
@@ -71,7 +71,7 @@ class _OrganizationRegisterScreenState
           borderRadius: BorderRadius.circular(15.0),
         ),
         titleStyle: TextStyle(
-          color: Colors.blue,
+          color: Colors.indigo,
         ),
       );
 
@@ -79,7 +79,7 @@ class _OrganizationRegisterScreenState
         context: context,
         style: alertStyle,
         type: AlertType.info,
-        title: 'validation Error',
+        title: 'validation Error!',
         desc: 'You must upload organization image',
         buttons: [
           DialogButton(
@@ -99,29 +99,6 @@ class _OrganizationRegisterScreenState
           )
         ],
       ).show();
-      
-      //showDialog(
-      //  context: context,
-      //  builder: (context) {
-      //    return AlertDialog(
-      //      title: Text(
-      //        'validation Error',
-      //        style: TextStyle(
-      //          color: Theme.of(context).primaryColor,
-      //        ),
-      //      ),
-      //      content: Text('You must upload organization image'),
-      //      actions: [
-      //        FlatButton(
-      //          child: Text('OK'),
-      //          onPressed: () {
-      //            Navigator.of(context).pop();
-      //          },
-      //        ),
-      //      ],
-      //    );
-      //  },
-      //);
     }
 
     if (_isValid && _image != null) {
@@ -136,6 +113,7 @@ class _OrganizationRegisterScreenState
       Provider.of<Organizations>(context, listen: false)
           .addOrganization(
         id: _currentUser.uid,
+        email: _currentUser.email,
         name: _nameController.text.trim(),
         address: _addressController.text.trim(),
         registrationNo: _registerNoController.text.trim(),
@@ -152,7 +130,8 @@ class _OrganizationRegisterScreenState
           _numberController.clear();
         });
 
-        Navigator.pop(context);
+        Navigator.of(context)
+            .pushReplacementNamed(OrganizationHomeScreen.routeName);
       }).catchError((error) {
         setState(() {
           _image = null;
@@ -276,6 +255,22 @@ class _OrganizationRegisterScreenState
     final _isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+            size: 30.0,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
@@ -335,20 +330,6 @@ class _OrganizationRegisterScreenState
                           ),
                         ],
                       ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 70.0,
-                    left: 5.0,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 30.0,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
                     ),
                   ),
                 ],

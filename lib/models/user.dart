@@ -20,8 +20,8 @@ class UserModel {
       id: doc['id'],
       userName: doc['userName'],
       roleName: doc['userRole'],
-      email: doc['email'],
-      profileUrl: doc['profileUrl'],
+      email: doc['userEmail'],
+      profileUrl: doc['userProfileUrl'],
     );
   }
 }

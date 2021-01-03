@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_wastage_management/screens/home_screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 
@@ -40,14 +41,14 @@ class Authentication extends ChangeNotifier {
     User _user = _userCredential.user;
 
     if (_user != null) {
-      await FirebaseFirestore.instance.collection('users').doc(_user.uid).set({
+      await userRef.doc(_user.uid).set({
         'id': _user.uid,
         'userName': userName,
         'userRole': userRole,
-        'email': email,
-        'profileUrl':
+        'userEmail': email,
+        'userProfileUrl':
             'https://ui-avatars.com/api/?name=$userName&background=FF5500&color=fff&length=1%27',
-        'timestamp': DateFormat('dd/MM/yyyy hh:mm').format(_timestamp),
+        'userCreatedAt': DateFormat('dd/MM/yyyy hh:mm').format(_timestamp),
       });
     }
 

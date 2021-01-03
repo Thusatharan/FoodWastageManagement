@@ -32,7 +32,7 @@ class OrganizationSearchWidget extends StatelessWidget {
             width: 35.0,
             height: 35.0,
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
+              color: Colors.indigo,
               borderRadius: BorderRadius.circular(30.0),
             ),
             child: IconButton(

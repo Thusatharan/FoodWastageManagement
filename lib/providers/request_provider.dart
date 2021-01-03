@@ -12,8 +12,8 @@ class Requests with ChangeNotifier {
       receiverContactNo: '0764834136',
       deliveryManDetails: DeliveryMan(
         id: 'd1',
-        deliveyManName: 'vimal',
-        deliveryManContactNo: '0213423434',
+        name: 'vimal',
+        contactNo: '0213423434',
       ),
       foodDetail: Food(
           id: 'f1',

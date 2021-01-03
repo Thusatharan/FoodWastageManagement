@@ -40,7 +40,6 @@ class Organizations with ChangeNotifier {
   }
 
   // begin fetch organization data from firestore
-
   Future<void> fetchAndSetOrganizations() async {
     try {
       final docsCollection = await organizationRef.get();
@@ -64,18 +63,13 @@ class Organizations with ChangeNotifier {
       throw error;
     }
   }
-
   // end fetch organization data from firestore
-
 
   Organization findById(String id) {
     return _organizations.firstWhere((org) => org.id == id);
   }
 
-
-
   // begin receivers search screen
-
   String _searchString;
 
   List<Organization> get searchOrganizations {
@@ -90,20 +84,18 @@ class Organizations with ChangeNotifier {
     _searchString = searchText;
     notifyListeners();
   }
-
   // end receivers search screen
 
   // begin organization home screen
-
   bool isOrganizationRegistered(String id) {
     return _organizations.any((org) => org.id == id);
   }
-
   // end organization home screen
 
   Future<void> addOrganization({
     String id,
     String name,
+    String email,
     String address,
     String registrationNo,
     String imageUrl,
@@ -112,26 +104,16 @@ class Organizations with ChangeNotifier {
     return organizationRef.doc(id).set({
       'id': id,
       'name': name,
+      'email': email,
       'address': address,
       'registrationNo': registrationNo,
       'imageUrl': imageUrl,
       'contactNo': contactNo,
       'rating': '',
       'createdAt': DateFormat('dd/MM/yyyy hh:mm a').format(_timestamp),
-    }).then((_) {
-      final newOrganization = Organization(
-        id: id,
-        name: name,
-        address: address,
-        registrationNo: registrationNo,
-        imageUrl: imageUrl,
-        contactNo: contactNo,
-      );
-
-      _organizations.add(newOrganization);
-      notifyListeners();
     }).catchError((error) {
       throw error;
+      
     });
   }
 }

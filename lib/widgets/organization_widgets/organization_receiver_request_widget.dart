@@ -180,7 +180,7 @@ class _OrganizationReceiverRequestWidgetState extends State<OrganizationReceiver
                                         child: Container(
                                           child: Text(
                                             widget.request.deliveryManDetails
-                                                .deliveyManName,
+                                                .name,
                                             style: TextStyle(
                                               fontSize: 16.0,
                                             ),
@@ -206,7 +206,7 @@ class _OrganizationReceiverRequestWidgetState extends State<OrganizationReceiver
                                         child: Container(
                                           child: Text(
                                             widget.request.deliveryManDetails
-                                                .deliveryManContactNo,
+                                                .contactNo,
                                             style: TextStyle(
                                               fontSize: 16.0,
                                             ),

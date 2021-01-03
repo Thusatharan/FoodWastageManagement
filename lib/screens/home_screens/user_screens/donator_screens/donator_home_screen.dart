@@ -3,12 +3,7 @@ import 'package:food_wastage_management/providers/auth_provider.dart';
 import 'package:food_wastage_management/screens/auth_screens/auth_screen.dart';
 import 'package:provider/provider.dart';
 
-class DeliveryManHomeScreen extends StatefulWidget {
-  @override
-  _DeliveryManHomeScreenState createState() => _DeliveryManHomeScreenState();
-}
-
-class _DeliveryManHomeScreenState extends State<DeliveryManHomeScreen> {
+class DonatorHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

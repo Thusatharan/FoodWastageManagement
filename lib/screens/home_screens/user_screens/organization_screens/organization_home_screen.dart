@@ -33,6 +33,7 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
   TextEditingController _searchReceiverController = TextEditingController();
   User _currentUser = FirebaseAuth.instance.currentUser;
   var _currentIndex = 0;
+  var _isOrganization = false;
   final _picker = ImagePicker();
 
   void _changePage(int index) {
@@ -45,11 +46,13 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
   void initState() {
     super.initState();
     _searchReceiverController.addListener(_onSearchChanged);
+    _checkIsOrganization();
   }
 
   @override
   void dispose() {
     _searchReceiverController.removeListener(_onSearchChanged);
+    _checkIsOrganization();
     super.dispose();
   }
 
@@ -58,6 +61,20 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
       context,
       listen: false,
     ).addSearchString(_searchReceiverController.text.trim());
+  }
+
+  _checkIsOrganization() async {
+    await organizationRef.doc(_currentUser.uid).get().then((doc) {
+      if (doc.exists) {
+        setState(() {
+          _isOrganization = true;
+        });
+      } else {
+        setState(() {
+          _isOrganization = false;
+        });
+      }
+    });
   }
 
   /* ********************************************************************* */
@@ -532,6 +549,7 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
   Widget build(BuildContext context) {
     final _isPotrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -607,6 +625,7 @@ class _OrganizationHomeScreenState extends State<OrganizationHomeScreen> {
               : (_currentIndex == 2)
                   ? searchScreen(_isPotrait)
                   : OrganizationProfileScreen(
+                      isOrganization: _isOrganization,
                       user: _currentUser,
                     ),
     );
