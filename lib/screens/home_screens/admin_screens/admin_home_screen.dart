@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 class AdminHomeScreen extends StatelessWidget {
   static const routeName = '/admin_home_screen';
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,3 +24,4 @@ class AdminHomeScreen extends StatelessWidget {
     );
   }
 }
+//Test
